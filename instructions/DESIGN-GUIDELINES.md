@@ -231,6 +231,9 @@ eyebrow      0.75rem  tracking 0.18em  uppercase
 - Medida de leitura: **60–72 caracteres** (`medida`).
 - Título display nunca em `uppercase`.
 - `eyebrow` é o único elemento em caixa alta da página.
+- **Eyebrows com parcimônia:** no máximo 1 a cada 3 seções (o herói conta como 1). Se uma seção
+  tem eyebrow, as duas seguintes não têm. Nunca eyebrow numerado ("01 · Experiência"). Regra da
+  skill Taste: eyebrow em toda seção é o tell nº 1 de página gerada por IA.
 
 ---
 
@@ -325,6 +328,14 @@ de selo).
 anime.js por subpath e `dynamic import` após a hidratação, em `createScope()` com
 `scope.revert()`. **Orçamento: 15KB gzip.**
 
+### Relação com as skills de motion
+
+A ferramenta está decidida acima e não muda (nada de GSAP nem `motion/react`, mesmo que a skill
+Taste sugira). Dentro dela, curva, duração, stagger, interrupção e saída seguem as skills do Emil
+Kowalski (`animate`, `emil-design-eng`). O loop de deriva do CTA final e o parallax do herói são
+exceções conscientes à regra de restrição dessas skills: passam obrigatoriamente por
+`/review-animations` na Fase 7.
+
 ---
 
 ## 9. Fotografia — direção e uso definido
@@ -405,6 +416,9 @@ primeira pessoa do plural ("a gente preparou", "a gente responde") quando a voz 
   "paraíso", "venha se encantar", "conforto e sofisticação".
 - Prometer o que não foi confirmado: café incluso, preço, regras, pet, horários.
 - Chamar a represa de praia ou de mar.
+- **Travessão (`—`) em qualquer texto visível**: copy, `title`, `description`, `alt`, legendas,
+  botões, eyebrows. Usar vírgula, dois-pontos, `·`, parênteses ou quebra de linha. (Regra da skill
+  Taste: o travessão é a marca mais reconhecível de texto gerado por IA.)
 - Superlativo vazio. A exceção é a frase da própria cliente — "a vista mais exclusiva de Três
   Marias" —, que é posicionamento dela e entra literalmente.
 
@@ -427,5 +441,7 @@ primeira pessoa do plural ("a gente preparou", "a gente responde") quando a voz 
 - [ ] Nenhum texto acima de 72 caracteres por linha
 - [ ] Nenhuma frase de copy que caberia em qualquer outro anúncio de temporada
 - [ ] Nenhuma menção a "praia" ou "mar" fora de "piscina-praia"
+- [ ] Zero travessão (`—`) em `src/` e `public/` (copy, metadata, alt, JSON-LD)
+- [ ] Eyebrows ≤ 1 a cada 3 seções, nenhum numerado
 - [ ] Licença das fontes documentada (OFL)
 - [ ] Nenhum `<<A CONFIRMAR>>` restante no deploy

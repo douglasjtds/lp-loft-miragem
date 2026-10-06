@@ -86,9 +86,12 @@ lp-loft-miragem/
 ├── scripts/
 │   ├── contraste.mjs
 │   └── processar-fotos.mjs
-├── DESIGN-GUIDELINES.md
-├── landing-page-structure.md
-└── TODOs.md
+├── .claude/                         # skills (versionadas), agents e hooks do impeccable
+├── CLAUDE.md                        # regras do projeto e quando usar cada skill
+└── instructions/
+    ├── DESIGN-GUIDELINES.md
+    ├── landing-page-structure.md
+    └── TODOs.md
 ```
 
 Removidos do scaffold: `sections/ParaQuem.tsx`, `sections/Metodo.tsx`, `sections/Sobre.tsx` e o
@@ -144,7 +147,8 @@ agir.**
 
 ### 5.0 — `Header`
 
-Fixo, fundo `papel` com blur após 40px de scroll.
+Fixo, fundo `papel` sólido; após 40px de scroll ganha um filete inferior `creme` (1px). **Sem
+blur nem transparência** (vidro fosco é tell de página gerada por IA nas skills Impeccable e Taste).
 - Esquerda: monograma 36px + "Loft Miragem" (Nunito Sans 600).
 - Direita (desktop): `Experiência · Galeria · O loft · Dúvidas` + CTA WhatsApp compacto.
 - Mobile: monograma + nome + CTA compacto. **Sem hambúrguer.**
@@ -158,7 +162,7 @@ Fixo, fundo `papel` com blur após 40px de scroll.
 Layout desktop **55/45** (texto 55, foto 45); mobile: foto primeiro (é ela que vende), texto
 embaixo, CTA visível sem rolar em 390×844.
 
-- `eyebrow`: "Três Marias · MG — loft para casais"
+- `eyebrow`: "Três Marias · MG · loft para casais"
 - `h1`: **"A vista mais exclusiva de Três Marias"** (frase da cliente), em duas linhas. Único h1.
 - Subtítulo: piscina-praia, SUP e o pôr do sol na represa, em uma frase.
 - Foto `por-do-sol.jpg` com máscara `a` (borda inferior em onda), `priority`,
@@ -243,7 +247,7 @@ reduced-motion, o lightbox mostra o poster e o vídeo só toca por ação do usu
 
 **Job:** responder "cabe no que a gente precisa?" de forma objetiva.
 
-Layout 5/7: à esquerda, título + frase "Pensado para casais — e acomoda até 4 pessoas"; à direita,
+Layout 5/7: à esquerda, título + frase "Pensado para casais, e acomoda até 4 pessoas"; à direita,
 lista de comodidades em **duas colunas de texto** (não grade de ícones). Fundo `creme`.
 
 Confirmado no Airbnb (2026-10-05):
@@ -284,7 +288,7 @@ Fundo `superficie-2`, texto `ancora`/`tinta`. Título + "★ 5,0 · 5 avaliaçõ
 
 **Job:** eliminar a dúvida "e agora, como faço?". Sequência real → numeração 01/02/03 justificada.
 
-1. **Chame no WhatsApp** com as datas e quantas pessoas — Calypso e André respondem.
+1. **Chame no WhatsApp** com as datas e quantas pessoas: Calypso e André respondem.
 2. **Confirme a reserva** — `<<A CONFIRMAR: forma de pagamento/sinal na reserva direta>>`.
 3. **Chegue e entre sozinho** — self check-in com cofre de chaves (confirmado no Airbnb);
    `<<A CONFIRMAR: horários de check-in e check-out>>`.
@@ -334,7 +338,7 @@ botão claro da página. Ondas de cinco cristas em `decor` a 8–12%, derivando,
 ### 5.11 — `Footer`
 
 Fundo `ancora`, texto `superficie-2`. Logo completa versão clara · "Calypso Martins e André
-Tertuliano, anfitriões" · Instagram · Airbnb · "Três Marias — MG" · copyright · crédito discreto do
+Tertuliano, anfitriões" · Instagram · Airbnb · "Três Marias, MG" · copyright · crédito discreto do
 desenvolvedor (`<<A CONFIRMAR: combinar com a cliente>>`).
 
 ---
@@ -378,7 +382,7 @@ parâmetro, mas ele aparece no analytics quando houver.
 
 ### Metadata
 
-- `title`: "Loft Miragem — loft para casais em Três Marias, MG" (≤ 60)
+- `title`: "Loft Miragem · loft para casais em Três Marias, MG" (≤ 60)
 - `description`: "Piscina-praia, SUP e o pôr do sol na represa de Três Marias. Um loft pensado
   para casais, nota 5,0 no Airbnb. Reserve direto pelo WhatsApp." (ajustar a 150–160)
 - `openGraph` com `og-image.jpg` (pôr do sol + logo), `locale: pt_BR`; `twitter:

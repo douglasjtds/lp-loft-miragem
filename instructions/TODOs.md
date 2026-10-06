@@ -5,7 +5,11 @@
 > valide o critério de pronto, commite você mesmo, e só então avance. O Claude **nunca commita** —
 > ao fim de cada fase ele entrega a mensagem de commit pronta, em Conventional Commits.
 >
-> **Antes de começar:** os três `.md` na raiz do projeto e os assets em `reference-files/`.
+> **Antes de começar:** `CLAUDE.md` na raiz, os três `.md` em `instructions/` e os assets em
+> `reference-files/`. As skills de frontend (impeccable, design-taste-frontend, emil-design-eng,
+> animate, review-animations, improve-animations, find-animation-opportunities,
+> animation-vocabulary, break-ui) estão em `.claude/skills/`; o `CLAUDE.md` diz quando usar cada
+> uma e quem vence em conflito.
 > Este projeto **adapta** a skill `landing-profissional` para hospedagem — leia a §0 do
 > `DESIGN-GUIDELINES.md` antes de qualquer fase.
 
@@ -32,9 +36,13 @@ DEPOIS, crie o scaffold copiando assets/scaffold/ da skill para a raiz, e ajuste
 
 NÃO configure output: 'export'. Não escreva seção nenhuma ainda.
 Rode install, lint, typecheck e build e me mostre o resultado.
+
+POR FIM, rode /impeccable init para gerar o PRODUCT.md. Ele resume o produto e aponta para
+instructions/ como fonte da verdade (instructions/ prevalece em conflito). Não gere DESIGN.md:
+o DESIGN-GUIDELINES.md cumpre esse papel.
 ```
 
-**Pronto quando:** `dev` sobe, `build` passa.
+**Pronto quando:** `dev` sobe, `build` passa, `PRODUCT.md` existe.
 
 ---
 
@@ -52,7 +60,7 @@ Implemente o sistema de design (DESIGN-GUIDELINES §3, §4, §7).
    anfitriões ["Calypso Martins", "André Tertuliano"], WhatsApp 5531972044476, URL do Airbnb
    (sem parâmetros de compartilhamento), Instagram. Remova registro profissional — e ajuste os
    consumidores (schema, footer, styleguide) para não quebrarem.
-5. Valide /styleguide.
+5. Valide /styleguide. Use /impeccable typeset para revisar a escala e os pares de fonte.
 
 Nenhum hex fora de globals.css e brand.ts.
 ```
@@ -130,6 +138,8 @@ DESIGN-GUIDELINES §11).
 - "Represa", nunca "praia" ou "mar" (exceto "piscina-praia").
 - Seis mensagens de WhatsApp, distinguíveis, na voz de quem visita (§6).
 - Teste cada frase: se caberia em qualquer anúncio de temporada, reescreva.
+- Zero travessão (—) em qualquer string. Rode o COPY SELF-AUDIT da skill design-taste-frontend
+  em todas as strings antes de entregar.
 
 Ao final, liste todos os <<A CONFIRMAR>> num bloco só.
 ```
@@ -156,12 +166,18 @@ Leva [A, B ou C — escolha uma] conforme landing-page-structure §5. Sem anima�
 - Galeria: grid assimétrico; lightbox em <dialog> com teclado e foco devolvido.
 
 Valide em 390px ANTES de qualquer outro breakpoint.
+
+Fluxo por seção: /impeccable shape antes de escrever → implementar → /impeccable critique +
+design-taste-frontend (pre-flight checklist) → ajustar. Eyebrows: no máximo 1 a cada 3 seções.
+Nas levas B e C, rode break-ui: galeria com 4 e com 12 itens, <<A CONFIRMAR>> longos no OLoft e
+no FAQ, nomes longos no footer.
 ```
 
 **Pronto quando:** página completa e navegável, sem animação, bonita em 390px.
 
 **⚠️ Passe visual REAL** ao fim da leva B (navegador): se a Experiência empilhar como três cards
-iguais no mobile, o efeito template voltou. Review com segundo agente ao fim da fase.
+iguais no mobile, o efeito template voltou. Review com segundo agente
+(`impeccable-finish-reviewer`) ao fim da fase.
 
 ---
 
@@ -200,10 +216,15 @@ DESIGN-GUIDELINES §8. Leia a seção inteira antes.
 anime.js por subpath + dynamic import após hidratação; createScope + revert.
 Estado inicial via JS. Reduced-motion: tudo estático e visível.
 Reporte o chunk de animação em gzip (orçamento 15KB).
+
+Construa com a skill animate (curva, duração, stagger, interrupção pelas regras do Emil), dentro
+do anime.js. Nada de GSAP nem motion/react. Ao final, rode find-animation-opportunities só para
+confirmar que nada além do previsto anima.
 ```
 
 **Pronto quando:** a linha do dia impressiona, o resto é discreto, reduced-motion estático. Passe
-visual + review com segundo agente.
+visual + `/review-animations` (só roda manual: digite o comando) + review com segundo agente
+(`impeccable-finish-reviewer`). Deriva e parallax precisam passar explicitamente na review.
 
 ---
 
@@ -217,6 +238,10 @@ Auditoria contra os dois documentos. Não corrija nada ainda.
 3. Performance (§8): bundles, separando framework de aplicação; Lighthouse mobile.
 4. Responsividade 390 / 768 / 1024 / 1440 — renderizado de verdade.
 5. Anti-template (§2): o que ainda parece anúncio genérico de temporada ou gerado por IA?
+
+Ferramentas: /impeccable audit (a11y, performance, responsivo), improve-animations (plano de
+correções de motion) e o pre-flight checklist da design-taste-frontend (travessão, eyebrows,
+clichês).
 ```
 
 Depois: correções em prompts pequenos, um problema por vez.
@@ -234,6 +259,8 @@ Depois: correções em prompts pequenos, um problema por vez.
 5. Checklist: preview do link no WhatsApp e no Instagram, favicon, JSON-LD, todos os CTAs
    abrindo a conversa certa, Airbnb abrindo o anúncio certo.
 6. Lighthouse mobile: as quatro pontuações.
+
+Antes dos itens 3 a 6, rode /impeccable polish.
 ```
 
 **Pronto quando:** no ar, Performance ≥ 95, preview correto, zero `<<A CONFIRMAR>>`.
@@ -244,8 +271,9 @@ Depois: correções em prompts pequenos, um problema por vez.
 
 1. **Uma fase por vez.** O Claude reporta a validação e entrega a mensagem de commit;
    **nunca roda `git commit`.**
-2. Em sessão nova, mandar ler os três `.md` primeiro.
+2. Em sessão nova, mandar ler o `CLAUDE.md` e os três `.md` de `instructions/` primeiro.
 3. **Nunca aceitar dado inventado** — preço, horário, regra, avaliação. Vira `<<A CONFIRMAR>>`.
 4. Validar visualmente ao fim de cada leva de seções.
 5. Prompt que gere mais de ~400 linhas: quebrar em dois.
-6. Review com segundo agente ao fim das fases 5, 7 e 8.
+6. Review com segundo agente (`impeccable-finish-reviewer`) ao fim das fases 5, 7 e 8.
+7. Skills em conflito: DESIGN-GUIDELINES → landing-profissional → Emil → Impeccable → Taste.
