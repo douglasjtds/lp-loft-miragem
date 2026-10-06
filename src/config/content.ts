@@ -30,7 +30,7 @@
  * sabe disso (ver `sections/Faq.tsx`).
  */
 
-import { profile, registroFormatado, social } from "@/config/brand";
+import { anfitrioesFormatado, cidadeUf, profile, social } from "@/config/brand";
 import type { BrandIconName } from "@/config/brand-icons";
 import type { OrganicShape } from "@/components/ui/OrganicClipPaths";
 import type { CtaOrigem } from "@/lib/whatsapp";
@@ -62,9 +62,6 @@ export type Foto = {
   /** Ajuste fino do corte, ex. "50% 30%" para manter o rosto no terço superior. */
   objectPosition?: string;
 };
-
-/** O registro como aparece na página, ou string vazia quando a profissão não tem. */
-const registro = registroFormatado ?? "";
 
 /* ────────────────────────────────────────────────────────────────────────────
    CTA — as mensagens pré-preenchidas do WhatsApp
@@ -119,14 +116,8 @@ export const hero = {
   /** Âncora do topo (monograma do header) e alvo do observer do StickyMobileCta. */
   id: "inicio",
 
-  /**
-   * Título + registro profissional. Onde há conselho, exibi-lo costuma ser exigência
-   * do código de ética para publicidade — e é o sinal de seriedade mais barato da
-   * página inteira.
-   */
-  eyebrow: (registro
-    ? `${profile.titulo} · ${registro}`
-    : profile.titulo) as Texto,
+  /** landing-page-structure.md §5.1. Conta como o 1º eyebrow da regra "1 a cada 3". */
+  eyebrow: `${profile.cidade} · ${profile.uf} · loft para casais` as Texto,
 
   /**
    * O ÚNICO h1 da página. Quebrado em linhas com controle manual — a Fase 7 anima
@@ -155,8 +146,7 @@ export const hero = {
   } satisfies CtaContent,
 
   /** Reduz atrito e alimenta busca local. Os dois dados vêm de brand.ts. */
-  disponibilidade:
-    `Atendimento ${profile.atendimento} · ${profile.cidade}` as Texto,
+  disponibilidade: cidadeUf as Texto,
 
   /**
    * A melhor foto do conjunto: fundo limpo, contexto de trabalho, olhando para a
@@ -389,9 +379,8 @@ export const sobre = {
     "<<A CONFIRMAR: no que ela acredita — o parágrafo que justifica o método>>",
   ] as readonly Texto[],
 
-  /** Nome completo e registro fecham o bloco, em caption. */
+  /** Seção removida na Fase 5 (DESIGN-GUIDELINES §0). */
   credenciais: [
-    registro ? `${profile.nomeCompleto} · ${registro}` : profile.nomeCompleto,
     "<<A CONFIRMAR: graduação — instituição e ano>>",
     "<<A CONFIRMAR: especializações que ela quer exibir>>",
   ] as readonly Texto[],
@@ -513,11 +502,9 @@ export const ctaFinal = {
 
 export const footer = {
   monogramaAlt: `Monograma de ${profile.nome}`,
-  nome: profile.nomeCompleto as Texto,
-  registro: registro as Texto,
+  nome: `${anfitrioesFormatado}, anfitriões` as Texto,
   /** Cidade/região é o dado que mais pesa em busca local. */
-  cidade: profile.cidade as Texto,
-  atendimento: profile.atendimento as Texto,
+  cidade: cidadeUf as Texto,
 
   contatos: [
     ...(social.instagram
@@ -529,17 +516,14 @@ export const footer = {
           },
         ]
       : []),
-    ...(social.linkedin
+    ...(social.airbnb
       ? [
           {
-            label: "LinkedIn",
-            valor: social.linkedin.handle,
-            href: social.linkedin.url as string | null,
+            label: "Airbnb",
+            valor: "Anúncio no Airbnb",
+            href: `${social.airbnb.url}?src=footer` as string | null,
           },
         ]
-      : []),
-    ...(profile.email
-      ? [{ label: "E-mail", valor: profile.email, href: null as string | null }]
       : []),
   ],
 
@@ -570,12 +554,12 @@ export const stickyMobileCta = {
    ──────────────────────────────────────────────────────────────────────────── */
 
 export const seo = {
-  /** ≤ 60 caracteres depois que a cidade real substituir o marcador. */
-  title: `${profile.nome} — ${profile.titulo} em ${profile.cidade}`,
+  /** ≤ 60 caracteres (landing-page-structure.md §7). */
+  title: `${profile.nome} · loft para casais em ${cidadeUf}`,
   /** 150–160 caracteres, com o benefício e a região. */
   description:
     "<<A CONFIRMAR: descrição de 150-160 caracteres, com benefício e região>>" as Texto,
-  ogImageAlt: `${profile.nome}, ${profile.titulo.toLowerCase()}`,
+  ogImageAlt: `${profile.nome}, loft para casais em ${cidadeUf}`,
   /** Página 404, no estilo da marca. */
   naoEncontrada: {
     titulo: "Esta página não existe.",

@@ -17,7 +17,7 @@ import { header, seo } from "@/config/content";
  * comportamento padrão para páginas de erro.
  */
 export const metadata: Metadata = {
-  title: `${seo.naoEncontrada.titulo} — ${profile.nome}`,
+  title: `${seo.naoEncontrada.titulo} · ${profile.nome}`,
   robots: { index: false, follow: false },
 };
 

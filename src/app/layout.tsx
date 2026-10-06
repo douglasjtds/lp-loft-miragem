@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, EB_Garamond, Montserrat } from "next/font/google";
+import { Fraunces, Nunito_Sans } from "next/font/google";
 
 import { OrganicClipPaths } from "@/components/ui/OrganicClipPaths";
 import { profile, social } from "@/config/brand";
@@ -9,48 +9,60 @@ import { canonicalPendente, siteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 /**
- * As três famílias, nos papéis definidos em DESIGN-GUIDELINES.md §4.
- *
- * ⚠️ ESTE TRIO É O PADRÃO DO TEMPLATE, não a marca da cliente. Substitua pelas fontes
- * do manual **depois de auditar a licença** (o procedimento está em `brand.ts`, no
- * comentário de `fonts`). Este é o único arquivo que precisa mudar: as custom
- * properties abaixo têm nome de PAPEL, então globals.css e os componentes não sabem
- * qual família está atrás delas.
- *
- * Se a fonte for do Google Fonts, mantenha `next/font/google`, que faz self-host no
- * build — o navegador do visitante nunca fala com o Google. Se for uma webfont
- * comprada, troque para `next/font/local` apontando para os `.woff2` em
- * `public/fonts/`, preservando a mesma `variable`.
+ * As famílias, nos papéis definidos em DESIGN-GUIDELINES.md §4: Fraunces (display e,
+ * em itálico, editorial) e Nunito Sans (UI). Ambas Google Fonts, OFL; o
+ * `next/font/google` faz self-host no build, e o navegador do visitante nunca fala com
+ * o Google. As custom properties têm nome de PAPEL: globals.css e os componentes não
+ * sabem qual família está atrás delas.
  *
  * `latin-ext` é obrigatório em português: sem ele, ã/ç/õ/é caem no fallback e a linha
  * fica mesclando duas fontes no meio da palavra.
  */
 
-const cormorant = Cormorant_Garamond({
+/**
+ * Fraunces variável, sem `weight`: um arquivo só cobre 500 e 600 e os eixos pedidos.
+ * `SOFT` arredonda as serifas (o display usa 80, ver globals.css); `opsz` deixa o
+ * navegador escolher o corte óptico pelo tamanho, que é o que segura o h1 grande sem
+ * ficar pesado e o h2 pequeno sem ficar frágil.
+ */
+const fraunces = Fraunces({
   subsets: ["latin", "latin-ext"],
-  weight: ["300"],
+  axes: ["SOFT", "opsz"],
   display: "swap",
   variable: "--font-display-family",
 });
 
-const montserrat = Montserrat({
+/**
+ * O editorial é o itálico da própria Fraunces, em instância separada, e não
+ * `style: ["normal", "italic"]` na de cima: só aparece nas avaliações e em pull quotes,
+ * bem abaixo da dobra. `preload: false` tira o arquivo da cascata crítica, para não
+ * competir com o LCP do herói.
+ */
+const frauncesItalic = Fraunces({
   subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600"],
+  style: ["italic"],
+  axes: ["SOFT", "opsz"],
+  display: "swap",
+  preload: false,
+  variable: "--font-editorial-family",
+});
+
+/**
+ * Nunito Sans também é variável: sem `weight`, um arquivo por subset cobre 400, 500
+ * e 600, em vez de três arquivos estáticos no preload.
+ */
+const nunitoSans = Nunito_Sans({
+  subsets: ["latin", "latin-ext"],
   display: "swap",
   variable: "--font-ui-family",
 });
 
 /**
- * O itálico da Montserrat é um arquivo à parte, em instância própria — e não
- * `style: ["normal", "italic"]` na instância acima, que traria itálico dos três pesos
- * e os colocaria todos no preload, competindo com o LCP por causa de uma frase.
- *
- * Só o peso 400 (o corpo de texto, onde a ênfase de fato aparece) e `preload: false`:
- * o arquivo é buscado quando a fonte é usada, não na cascata crítica. Sem ele, o
- * navegador inclinaria a romana por conta própria — oblíquo sintético, que na
- * Montserrat some com as terminações curvas do `a` e do `e`.
+ * O itálico da Nunito Sans, só para `<em>` no corpo de texto. Instância própria, só
+ * 400 e `preload: false`, pelo mesmo motivo do itálico da Fraunces. Sem ele o navegador
+ * inclinaria a romana por conta própria (oblíquo sintético).
  */
-const montserratItalic = Montserrat({
+const nunitoSansItalic = Nunito_Sans({
   subsets: ["latin", "latin-ext"],
   weight: ["400"],
   style: ["italic"],
@@ -59,20 +71,10 @@ const montserratItalic = Montserrat({
   variable: "--font-ui-italic-family",
 });
 
-const ebGaramond = EB_Garamond({
-  subsets: ["latin", "latin-ext"],
-  weight: ["400"],
-  display: "swap",
-  variable: "--font-editorial-family",
-});
-
 /**
  * Metadata — landing-page-structure.md §7.
  *
- * `title` e `description` vêm de content.ts e ainda carregam o marcador da cidade: é
- * proposital (o dado que mais pesa em busca local não pode ser inventado), e é o motivo
- * de o título estourar os 60 caracteres hoje. Ao substituir o marcador na Fase 9, ele
- * volta para a faixa.
+ * `title` e `description` vêm de content.ts (texto final na Fase 4).
  *
  * `robots` só libera indexação quando existe domínio final: enquanto a URL canônica for
  * o localhost ou uma URL de preview da Vercel, a página pede `noindex` — preview
@@ -92,7 +94,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    siteName: `${profile.nome} — ${profile.titulo}`,
+    siteName: profile.nome,
     title: seo.title,
     description: seo.description,
     url: "/",
@@ -125,7 +127,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${cormorant.variable} ${montserrat.variable} ${montserratItalic.variable} ${ebGaramond.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${frauncesItalic.variable} ${nunitoSans.variable} ${nunitoSansItalic.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         {/* As máscaras orgânicas vivem aqui, uma única vez: o OrganicImage só referencia

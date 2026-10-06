@@ -23,11 +23,11 @@ import {
 /**
  * Página temporária de validação visual do sistema de design (Fases 1 a 3).
  *
- * Não faz parte da landing — sai do projeto (ou vira rota protegida) antes do deploy
+ * Não faz parte da landing, sai do projeto (ou vira rota protegida) antes do deploy
  * da Fase 9. Por isso: `noindex`, e nenhum link apontando para cá.
  *
  * As cores aqui saem de `brand.ts` e são aplicadas via `var(--color-*)`, não via hex
- * literal — a regra dura do projeto continua valendo dentro do próprio styleguide.
+ * literal, a regra dura do projeto continua valendo dentro do próprio styleguide.
  * Os ratios são CALCULADOS a partir dos tokens; se um token mudar, a tabela acompanha.
  */
 export const metadata: Metadata = {
@@ -39,17 +39,17 @@ const token = (name: ColorToken) => `var(--color-${name})`;
 
 /** Classes escritas por extenso: o scanner do Tailwind não resolve nome montado em runtime. */
 const amostraDeFonte: Record<keyof typeof fonts, string> = {
-  display: "font-display font-light",
+  display: "display-md",
   ui: "font-ui",
-  editorial: "font-editorial",
+  editorial: "font-editorial italic",
 };
 
 const veredito: Record<ContrastVerdict, { label: string; sinal: string }> = {
-  AAA: { label: "AAA — texto normal", sinal: "✅" },
-  AA: { label: "AA — texto normal", sinal: "✅" },
+  AAA: { label: "AAA, texto normal", sinal: "✅" },
+  AA: { label: "AA, texto normal", sinal: "✅" },
   "AA-grande": { label: "Só texto grande (≥24px)", sinal: "⚠️" },
   reprovado: {
-    label: "Reprovado em texto — decorativo/superfície",
+    label: "Reprovado em texto, decorativo/superfície",
     sinal: "❌",
   },
 };
@@ -63,39 +63,39 @@ const pares: Array<[ColorToken, ColorToken, string?]> = [
   ["ancora", "creme"],
   ["tinta", "creme"],
   ["tinta-suave", "creme"],
-  ["acento-texto", "papel", "No limite do AA — usar com parcimônia"],
-  ["acento", "papel"],
+  ["acento-texto", "papel", "Texto em acento sobre claro e anel de foco"],
+  ["acento", "papel", "Nunca botão, nunca texto sobre claro"],
   ["decor", "papel", "Decorativo apenas"],
   ["decor", "creme", "Decorativo apenas"],
   ["superficie-2", "papel", "Só superfície"],
   ["papel", "ancora", "★ CTA primário"],
   ["superficie-2", "ancora", "Texto de apoio na faixa escura"],
-  ["decor", "ancora"],
-  ["ancora", "superficie-2", "Faixa de depoimentos"],
-  ["ancora-quente", "superficie-2"],
-  ["papel", "acento-texto", "CTA secundário aceitável"],
-  ["papel", "acento", "Não usar como botão com texto pequeno"],
+  ["acento", "ancora", "Âmbar como texto, só na faixa escura"],
+  ["decor", "ancora", "Ícones grandes na faixa escura"],
+  ["ancora", "superficie-2", "Faixa de avaliações"],
+  ["ancora-quente", "superficie-2", 'Atribuição "via Airbnb"'],
+  ["tinta-suave", "superficie-2", "Só texto grande"],
 ];
 
 const escala = [
   {
     classe: "display-xl",
     uso: "h1 do herói",
-    amostra: "O h1 desta landing",
+    amostra: "A vista mais exclusiva de Três Marias",
   },
   {
     classe: "display-lg",
     uso: "h2 de seção",
-    amostra: "Como funciona o atendimento",
+    amostra: "O dia termina na água",
   },
   {
     classe: "display-md",
     uso: "títulos menores",
-    amostra: "Os pilares do método",
+    amostra: "Manhã, tarde e noite no loft",
   },
   {
     classe: "body-lg",
-    uso: "subtítulo do herói, texto do Sobre",
+    uso: "subtítulo do herói, abertura de seção",
     amostra:
       "O subtítulo do herói: uma frase concreta, sem promessa de resultado e sem superlativo.",
   },
@@ -107,17 +107,17 @@ const escala = [
   },
   {
     classe: "caption",
-    uso: "formação, registro profissional, notas",
-    amostra: "Formação e registro profissional",
+    uso: "legendas, atribuições, notas",
+    amostra: "Três Marias, MG · via Airbnb",
   },
   {
     classe: "eyebrow",
     uso: "rótulo de seção",
-    amostra: "Título profissional · registro",
+    amostra: "Três Marias · MG · loft para casais",
   },
 ];
 
-/** Cabeçalho de bloco do styleguide — repetido em todas as demonstrações da Fase 2. */
+/** Cabeçalho de bloco do styleguide, repetido em todas as demonstrações da Fase 2. */
 function Titulo({
   id,
   children,
@@ -148,7 +148,7 @@ function Titulo({
 const fundosDeSecao: Array<[SectionBackground, string]> = [
   ["papel", "Fundo principal. Par de texto principal com a tinta"],
   ["creme", "Seção alternada. Mesmo par de texto do papel"],
-  ["superficie", "Faixa de depoimentos. Texto na ancora sobre a superficie-2"],
+  ["superficie", "Faixa de avaliações. Texto na ancora sobre a superficie-2"],
   ["ancora", "Faixa de fechamento e footer. Texto de apoio na superficie-2"],
 ];
 
@@ -239,7 +239,7 @@ export default function Styleguide() {
         >
           Página temporária, fora do índice e sem link a partir da landing. Os
           ratios abaixo são calculados a partir dos tokens de{" "}
-          <code>brand.ts</code> — não são uma tabela copiada.
+          <code>brand.ts</code>, não são uma tabela copiada.
         </p>
       </header>
 
@@ -269,7 +269,7 @@ export default function Styleguide() {
         <p className="body medida mb-6" style={{ color: token("tinta-suave") }}>
           Veredito para texto normal.{" "}
           <strong>Decor e superficie-2 não são cor de texto</strong> em lugar
-          nenhum da página — aparecem aqui só para provar o porquê.
+          nenhum da página, aparecem aqui só para provar o porquê.
         </p>
         <div className="overflow-x-auto">
           <table className="caption w-full border-collapse text-left">
@@ -304,8 +304,9 @@ export default function Styleguide() {
           Famílias
         </h2>
         <p className="body medida mb-6" style={{ color: token("tinta-suave") }}>
-          Três famílias é o teto. Duas delas substituem fontes do manual que não
-          podem ir para produção — ver a Fase 0.5 do TODOs.md.
+          Fraunces (display, SOFT 80) e Nunito Sans (UI). O editorial é a
+          própria Fraunces em itálico, SOFT 100, só em avaliações e pull quotes.
+          Ambas OFL.
         </p>
         <ul className="grid gap-8 md:grid-cols-3">
           {(Object.keys(fonts) as Array<keyof typeof fonts>).map((role) => {
@@ -411,7 +412,7 @@ export default function Styleguide() {
       </section>
 
       {/* ====================================================================
-          Fase 2 — componentes base
+          Fase 2, componentes base
           ==================================================================== */}
 
       <div className="container-lp mb-10">
@@ -425,7 +426,7 @@ export default function Styleguide() {
         <div className="container-lp">
           <Titulo
             id="c-section"
-            nota="Fundo full-bleed, conteúdo no container-lp (máx. 1152px). Todo o ritmo vertical vem de padding-block — nenhuma seção usa margin, então duas seções vizinhas nunca colapsam espaço."
+            nota="Fundo full-bleed, conteúdo no container-lp (máx. 1152px). Todo o ritmo vertical vem de padding-block, nenhuma seção usa margin, então duas seções vizinhas nunca colapsam espaço."
           >
             Section
           </Titulo>
@@ -444,7 +445,7 @@ export default function Styleguide() {
       <section className="container-lp mb-16" aria-labelledby="c-button">
         <Titulo
           id="c-button"
-          nota="Alvo mínimo de 44×44px, sem sombra, sem gradiente, sem canto arredondado. Passe o mouse, segure o clique e navegue com Tab em cada um — o anel de foco é o global, nenhuma variante o remove."
+          nota="Alvo mínimo de 44×44px, sem sombra, sem gradiente, sem canto arredondado. Passe o mouse, segure o clique e navegue com Tab em cada um, o anel de foco é o global, nenhuma variante o remove."
         >
           Button
         </Titulo>
@@ -461,7 +462,7 @@ export default function Styleguide() {
                     : "text-acento-texto"
                 }
               >
-                {variant} — {nota}
+                {variant} · {nota}
               </Eyebrow>
               <div className="mt-3 flex flex-wrap items-center gap-4">
                 <Button variant={variant}>Agendar consulta</Button>
@@ -483,18 +484,18 @@ export default function Styleguide() {
       <section className="container-lp mb-16" aria-labelledby="c-eyebrow">
         <Titulo
           id="c-eyebrow"
-          nota="O único elemento em caixa alta da página. A cor vem de fora, por herança — o componente não escolhe cor."
+          nota="O único elemento em caixa alta da página. A cor vem de fora, por herança, o componente não escolhe cor."
         >
           Eyebrow
         </Titulo>
         <div className="flex flex-wrap gap-8">
           <div className="bg-papel p-6">
             <Eyebrow className="text-acento-texto">
-              Título profissional · registro
+              Três Marias · MG · loft para casais
             </Eyebrow>
           </div>
           <div className="bg-ancora p-6">
-            <Eyebrow className="text-superficie-2">Sobre</Eyebrow>
+            <Eyebrow className="text-superficie-2">Avaliações</Eyebrow>
           </div>
         </div>
       </section>
@@ -502,9 +503,9 @@ export default function Styleguide() {
       <section className="container-lp mb-16" aria-labelledby="c-organic">
         <Titulo
           id="c-organic"
-          nota="Agora sobre a foto real (Fase 3). As quatro precisam ser assimétricas, sem vértice agudo e distinguíveis de longe — e nenhuma pode parecer border-radius. A shape a é a do herói."
+          nota="Agora sobre a foto real (Fase 3). As quatro precisam ser assimétricas, sem vértice agudo e distinguíveis de longe, e nenhuma pode parecer border-radius. A shape a é a do herói."
         >
-          OrganicImage — as 4 máscaras
+          OrganicImage, as 4 máscaras
         </Titulo>
         <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {ORGANIC_SHAPES.map((shape) => (
@@ -546,7 +547,7 @@ export default function Styleguide() {
       <section className="container-lp mb-16" aria-labelledby="c-assets">
         <Titulo
           id="c-assets"
-          nota="O ensaio inteiro sai de scripts/processar-fotos.mjs. Fotos de ensaios diferentes precisam de tratamento cromático unificado (dessaturação em direção à cor decorativa da paleta) para lerem como um conjunto só — sem isso cada seção parece de um site diferente."
+          nota="O ensaio inteiro sai de scripts/processar-fotos.mjs. Fotos de ensaios diferentes precisam de tratamento cromático unificado (dessaturação em direção à cor decorativa da paleta) para lerem como um conjunto só, sem isso cada seção parece de um site diferente."
         >
           Assets
         </Titulo>
@@ -590,8 +591,8 @@ export default function Styleguide() {
           </div>
           <p className="caption medida text-tinta-suave">
             O monograma é PNG, não SVG: o manual só entregou raster e redesenhar
-            a ligadura à mão a descaracterizaria. Ele não é animado — só os três
-            ícones são —, então raster aqui não custa nada.
+            a ligadura à mão a descaracterizaria. Ele não é animado (só os três
+            ícones são), então raster aqui não custa nada.
           </p>
         </div>
       </section>
@@ -599,9 +600,9 @@ export default function Styleguide() {
       <section className="container-lp mb-16" aria-labelledby="c-brandicon">
         <Titulo
           id="c-brandicon"
-          nota="⚠️ Traçados PROVISÓRIOS: a Fase 3 substitui os paths pelos ícones reais do manual. O que se valida aqui é a API e o traçado aberto em stroke — requisito da animação de desenho da Fase 7. Cor por herança."
+          nota="⚠️ Traçados PROVISÓRIOS: a Fase 3 substitui os paths pelos ícones reais do manual. O que se valida aqui é a API e o traçado aberto em stroke, requisito da animação de desenho da Fase 7. Cor por herança."
         >
-          BrandIcon — corpo, mente, alma
+          BrandIcon · corpo, mente, alma
         </Titulo>
         <div className="text-ancora flex flex-wrap items-end gap-10">
           {BRAND_ICON_NAMES.map((name) => (
@@ -616,7 +617,7 @@ export default function Styleguide() {
             <BrandIcon key={name} name={name} size={48} title={name} />
           ))}
           <p className="caption">
-            48px é o mínimo da §5 — abaixo disso o traço de 1.5px desaparece.
+            48px é o mínimo da §5, abaixo disso o traço de 1.5px desaparece.
           </p>
         </div>
       </section>
@@ -624,7 +625,7 @@ export default function Styleguide() {
       <section className="container-lp mb-16" aria-labelledby="c-whatsapp">
         <Titulo
           id="c-whatsapp"
-          nota="Cada origem manda uma mensagem diferente — é como a a cliente sabe de onde veio o lead sem backend. Enquanto o número não chegar, todos renderizam desabilitados: um link para wa.me sem destinatário abriria o WhatsApp em branco e chegaria em produção sem ninguém notar."
+          nota="Cada origem manda uma mensagem diferente, é como a cliente sabe de onde veio o lead sem backend. Se o número voltar a ficar pendente, todos renderizam desabilitados: um link para wa.me sem destinatário abriria o WhatsApp em branco."
         >
           WhatsappCta
         </Titulo>

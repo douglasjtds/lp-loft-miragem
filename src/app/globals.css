@@ -6,28 +6,27 @@
    Regra dura do projeto: nenhum valor hex existe fora deste bloco e de
    src/config/brand.ts. Nada de `text-[#1a2b3c]` em componente.
 
-   ⚠️ OS VALORES ABAIXO SÃO MARCADORES DE POSIÇÃO — uma escala neutra,
-   deliberadamente sem personalidade, para que ninguém publique por engano
-   achando que é a marca. Substitua pelos hexes do manual da cliente, mantenha
-   `brand.ts` idêntico, e rode `node scripts/contraste.mjs` antes de seguir.
+   Os hexes são os da logo do Loft Miragem, amostrados em pixel, mais os neutros
+   derivados da areia da piscina-praia (DESIGN-GUIDELINES.md §3). `brand.ts` tem
+   que ficar idêntico; depois de qualquer troca, `node scripts/contraste.mjs`.
 
-   Os NOMES são papéis, não cores. É o que permite a mesma base servir uma
-   marca verde-e-terracota e um escritório azul-marinho sem renomear nada.
+   Os NOMES são papéis, não cores: grafite é `ancora` porque segura títulos e CTA,
+   não porque é cinza. O azul #1494D3 da logo não vira token, vive só no monograma.
 
    Não há tema escuro — está explicitamente fora de escopo.
    ========================================================================== */
 
 @theme {
-  --color-ancora: #262b30;
-  --color-ancora-quente: #3a4148;
-  --color-decor: #9aa0a6;
-  --color-acento: #6b7f99;
-  --color-acento-texto: #4f627a;
-  --color-superficie-2: #c9cdd2;
-  --color-papel: #fbfbfa;
-  --color-creme: #f1f1ef;
-  --color-tinta: #1b1d1f;
-  --color-tinta-suave: #55595e;
+  --color-ancora: #373435;
+  --color-ancora-quente: #4b4648;
+  --color-decor: #30c8d4;
+  --color-acento: #d69257;
+  --color-acento-texto: #8f5420;
+  --color-superficie-2: #e4cfb5;
+  --color-papel: #fbf7f1;
+  --color-creme: #f3e9dc;
+  --color-tinta: #2a2728;
+  --color-tinta-suave: #6b6466;
 
   /* As três famílias vêm do next/font (layout.tsx), que injeta estas custom
      properties no <html>. Os nomes aqui são PAPÉIS: trocar a família da marca é
@@ -43,6 +42,10 @@
     var(--font-ui-italic-family), system-ui, -apple-system, sans-serif;
   --font-editorial:
     var(--font-editorial-family), Georgia, "Times New Roman", serif;
+  /* O editorial é a Fraunces itálico no SOFT máximo (§4): a voz mais macia da página,
+     só nas avaliações e em pull quotes. O Tailwind aplica isto junto com
+     `font-editorial`; o `italic` vai na classe, sempre em par (`font-editorial italic`). */
+  --font-editorial--font-variation-settings: "SOFT" 100;
 }
 
 /* ==========================================================================
@@ -51,11 +54,11 @@
    Utilitários, não elementos: quem decide o nível semântico é o HTML (h1/h2/p),
    quem decide o tamanho é a classe. Um h2 pode ser display-md sem virar h3.
 
-   ⚠️ `display-*` está calibrado para uma SERIFADA de alto contraste: peso 300,
-   tracking negativo, entrelinha 1.05. Isso não é neutro — outra anatomia pede o
-   contrário. Uma condensada de caixa alta (Bebas, Oswald) precisa de tracking
-   POSITIVO e entrelinha abaixo de 1, porque fecha demais em tamanho grande e não
-   tem descendentes. Recalibre junto com a fonte, na Fase 1.
+   `display-*` está calibrado para a Fraunces (§4): peso 500, eixo SOFT em 80 (as
+   serifas arredondam, a autoridade fica), tracking negativo só nos dois tamanhos
+   grandes. O `opsz` fica automático (`font-optical-sizing: auto`, o padrão): o
+   navegador escolhe o corte óptico pelo tamanho, sem número mágico aqui.
+   `text-wrap: balance` evita a última palavra sozinha numa linha ("Três / Marias").
 
    E não declare `text-transform` aqui: se a fonte já é caixa alta por desenho,
    forçar no CSS amarra o utilitário a ela.
@@ -63,7 +66,9 @@
 
 @utility display-xl {
   font-family: var(--font-display);
-  font-weight: 300;
+  font-weight: 500;
+  font-variation-settings: "SOFT" 80;
+  text-wrap: balance;
   font-size: clamp(2.75rem, 7vw, 5rem);
   line-height: 1.05;
   letter-spacing: -0.02em;
@@ -71,7 +76,9 @@
 
 @utility display-lg {
   font-family: var(--font-display);
-  font-weight: 300;
+  font-weight: 500;
+  font-variation-settings: "SOFT" 80;
+  text-wrap: balance;
   font-size: clamp(2rem, 5vw, 3.25rem);
   line-height: 1.12;
   letter-spacing: -0.01em;
@@ -79,7 +86,9 @@
 
 @utility display-md {
   font-family: var(--font-display);
-  font-weight: 300;
+  font-weight: 500;
+  font-variation-settings: "SOFT" 80;
+  text-wrap: balance;
   font-size: clamp(1.5rem, 3.5vw, 2.25rem);
   line-height: 1.2;
 }
@@ -142,7 +151,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    /* As âncoras (#metodo, #como-funciona, #sobre, #duvidas) precisam parar abaixo
+    /* As âncoras (#experiencia, #o-loft, #como-reservar, #duvidas...) precisam parar abaixo
        do header fixo, não atrás dele. */
     scroll-padding-top: 5rem;
     -webkit-text-size-adjust: 100%;

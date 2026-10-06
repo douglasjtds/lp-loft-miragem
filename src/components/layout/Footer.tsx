@@ -35,17 +35,11 @@ export function Footer() {
             <p className="body text-papel mt-6">
               <Pendencia>{footer.nome}</Pendencia>
             </p>
-            <p className="caption mt-1">
-              <Pendencia>{footer.registro}</Pendencia>
-            </p>
           </div>
 
           <div className="md:col-span-3">
             <p className="caption">
               <Pendencia>{footer.cidade}</Pendencia>
-            </p>
-            <p className="caption mt-1">
-              <Pendencia>{footer.atendimento}</Pendencia>
             </p>
           </div>
 

@@ -1,10 +1,10 @@
 /**
  * Dados estruturados (JSON-LD) — landing-page-structure.md §7.
  *
- * Três nós, num único `@graph`: `Person` (a profissional), o nó do NEGÓCIO (o tipo
- * schema.org da profissão) e `FAQPage` (espelho do accordion). O grafo único, em vez de
- * três blocos soltos, é o que permite cruzar os nós por `@id` — o Google entende que a
- * Person é a `founder` do negócio, em vez de tratar os dois como entidades sem relação.
+ * Dois nós, num único `@graph`: o NEGÓCIO e `FAQPage` (espelho do accordion). Não há
+ * nó `Person`: o Loft Miragem é uma hospedagem, sem profissional nem registro
+ * (DESIGN-GUIDELINES.md §0). A troca para `LodgingBusiness`, com `amenityFeature` e
+ * `numberOfRooms`, é a Fase 6.
  *
  * Regra que atravessa o arquivo inteiro: **nenhum campo pendente entra**. Um
  * `telephone: "<<A CONFIRMAR: ...>>"` não é um marcador visível, é um dado falso
@@ -15,7 +15,7 @@
  * completo. É o checklist da fase de deploy.
  */
 
-import { profile, registroFormatado, social, whatsapp } from "@/config/brand";
+import { profile, social, whatsapp } from "@/config/brand";
 import { faq, seo } from "@/config/content";
 import { confirmado } from "@/lib/pendencias";
 import { siteUrl, urlAbsoluta } from "@/lib/site-url";
@@ -55,52 +55,16 @@ const TIPO_NEGOCIO = "ProfessionalService";
  */
 const ESPECIALIDADE_MEDICA: string | null = null;
 
-const ID_PERSON = `${siteUrl}/#pessoa`;
 const ID_NEGOCIO = `${siteUrl}/#negocio`;
 const ID_PAGINA = `${siteUrl}/#pagina`;
 
 /** `sameAs` só cresce quando a cliente confirmar outros perfis. */
-const perfisSociais = [social.instagram?.url, social.linkedin?.url].filter(
+const perfisSociais = [social.instagram?.url, social.airbnb?.url].filter(
   (url): url is string => typeof url === "string",
 );
 
-/** 1. Person — quem atende. */
-function person(): JsonLdNode {
-  const registro = confirmado(registroFormatado);
-
-  return {
-    "@type": "Person",
-    "@id": ID_PERSON,
-    // O nome completo (como consta no registro) costuma ser pendente; o nome de marca
-    // não é, e é sob ele que a busca por marca acontece.
-    name: confirmado(profile.nomeCompleto) ?? profile.nome,
-    alternateName: confirmado(profile.nomeCompleto) ? profile.nome : undefined,
-    jobTitle: confirmado(profile.titulo),
-    description: confirmado(profile.bio),
-    url: `${siteUrl}/`,
-    image: urlAbsoluta("/images/retrato-hero.jpg"),
-    sameAs: perfisSociais.length > 0 ? perfisSociais : undefined,
-    // O registro em conselho é a credencial que dá seriedade ao nó, e costuma ser o
-    // campo mais importante que falta.
-    hasCredential: registro
-      ? {
-          "@type": "EducationalOccupationalCredential",
-          credentialCategory: "Registro profissional",
-          recognizedBy: confirmado(profile.registro?.conselho)
-            ? {
-                "@type": "Organization",
-                name: confirmado(profile.registro?.conselho),
-              }
-            : undefined,
-          identifier: registro,
-        }
-      : undefined,
-    worksFor: { "@type": TIPO_NEGOCIO, "@id": ID_NEGOCIO },
-  };
-}
-
 /**
- * 2. O negócio — o atendimento, para busca local.
+ * 1. O negócio, para busca local.
  *
  * `address` só entra quando houver cidade confirmada: `PostalAddress` sem
  * `addressLocality` é um objeto vazio que não ajuda ninguém.
@@ -114,21 +78,20 @@ function negocio(): JsonLdNode {
   return {
     "@type": TIPO_NEGOCIO,
     "@id": ID_NEGOCIO,
-    name: `${profile.nome} — ${profile.titulo}`,
-    // A description de SEO cita cidade e modalidade, que costumam ser pendentes;
-    // enquanto ela trouxer marcador, o grafo usa a bio curta.
-    description: confirmado(seo.description) ?? confirmado(profile.bio),
+    name: profile.nome,
+    // Enquanto a description de SEO trouxer marcador, o campo fica de fora.
+    description: confirmado(seo.description),
     url: `${siteUrl}/`,
     image: urlAbsoluta("/og-image.jpg"),
     logo: urlAbsoluta("/brand/monograma.png"),
     telephone: telefone,
-    email: confirmado(profile.email),
     sameAs: perfisSociais.length > 0 ? perfisSociais : undefined,
     medicalSpecialty: ESPECIALIDADE_MEDICA ?? undefined,
     address: cidade
       ? {
           "@type": "PostalAddress",
           addressLocality: cidade,
+          addressRegion: confirmado(profile.uf),
           addressCountry: "BR",
         }
       : undefined,
@@ -137,12 +100,11 @@ function negocio(): JsonLdNode {
     // ambos aparecem direto no resultado de busca.
     priceRange: undefined,
     openingHours: undefined,
-    founder: { "@type": "Person", "@id": ID_PERSON },
   };
 }
 
 /**
- * 3. FAQPage — espelho EXATO do accordion.
+ * 2. FAQPage — espelho EXATO do accordion.
  *
  * Só entram as perguntas cuja resposta já está confirmada: publicar uma resposta com
  * `<<A CONFIRMAR>>` dentro é oferecer ao Google um trecho que ele pode exibir no
@@ -174,7 +136,7 @@ function faqPage(): JsonLdNode | null {
 
 /** O grafo pronto para virar `<script type="application/ld+json">`. */
 export function jsonLd(): JsonLdNode {
-  const nos = [person(), negocio(), faqPage()].filter(
+  const nos = [negocio(), faqPage()].filter(
     (no): no is JsonLdNode => no !== null,
   );
 
@@ -188,16 +150,10 @@ export function jsonLd(): JsonLdNode {
 export function pendenciasDoSchema(): string[] {
   const faltando: string[] = [];
 
-  if (!confirmado(profile.nomeCompleto))
-    faltando.push("Person.name — nome completo como consta no registro");
-  if (profile.registro && !confirmado(registroFormatado))
-    faltando.push("Person.hasCredential — sigla, região e número do registro");
   if (!confirmado(whatsapp.phone))
     faltando.push(
       `${TIPO_NEGOCIO}.telephone — WhatsApp em formato internacional`,
     );
-  if (!confirmado(profile.email))
-    faltando.push(`${TIPO_NEGOCIO}.email — ou a decisão de não exibir e-mail`);
   if (!confirmado(profile.cidade))
     faltando.push(`${TIPO_NEGOCIO}.address / areaServed — cidade e estado`);
   if (perfisSociais.length === 0)
