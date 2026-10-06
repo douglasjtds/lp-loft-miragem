@@ -130,11 +130,13 @@ DESIGN-GUIDELINES §11).
 
 - Remova o conteúdo de ParaQuem, Metodo e Sobre; crie os blocos de Experiencia (3 momentos),
   Galeria (lista de itens com alt e legenda; tipo GaleriaItem = foto | video, hoje só fotos), OLoft (comodidades confirmadas + marcadores),
-  Localizacao, Avaliações (exibir: false, lista vazia) e Como reservar.
+  Localizacao, Avaliações (lista com fonte "google" | "airbnb") e Como reservar.
 - O h1 é a frase da cliente: "A vista mais exclusiva de Três Marias".
 - Dados confirmados: estão na §5.2 e §5.5 do landing-page-structure. Todo o resto é
   <<A CONFIRMAR: ...>>. NÃO invente preço, horário, regra, café, pet, distância.
-- Avaliações: NÃO escreva, resuma nem parafraseie nenhuma. A lista fica vazia até os prints.
+- Avaliações: copie LITERALMENTE de reference-files/avaliacoes-google.md (5 a 6, critérios em
+  landing-page-structure §5.6). NÃO escreva, resuma, corte nem corrija nenhuma. As do Airbnb
+  entram quando chegarem os prints. Nunca a avaliação do Douglas.
 - "Represa", nunca "praia" ou "mar" (exceto "piscina-praia").
 - Seis mensagens de WhatsApp, distinguíveis, na voz de quem visita (§6).
 - Teste cada frase: se caberia em qualquer anúncio de temporada, reescreva.
@@ -252,7 +254,7 @@ Depois: correções em prompts pequenos, um problema por vez.
 
 ```
 1. Substitua todos os <<A CONFIRMAR>> pelos valores reais. Nenhum pode sobreviver ao deploy.
-   Confira de novo nota e nº de avaliações no Airbnb.
+   Confira de novo nota e nº de avaliações no Google e no Airbnb.
 2. Remova (ou proteja) /styleguide.
 3. Build de produção sem warnings.
 4. Vercel apontando para a main; DNS do domínio quando existir (até lá, *.vercel.app com noindex).

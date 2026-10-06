@@ -34,7 +34,7 @@ Consequências:
 | — | **`OLoft`** (nova) | Capacidade e comodidades: a pergunta objetiva que vem depois do desejo |
 | — | **`Localizacao`** (nova) | "Onde fica e como chego" é a objeção nº 1 de destino fora da capital |
 | `ComoFunciona` | **"Como reservar"** | Mesmo componente; agora são os passos da reserva |
-| `Depoimentos` | **"Avaliações"** | Avaliações reais do Airbnb, transcritas literalmente |
+| `Depoimentos` | **"Avaliações"** | Avaliações reais do Google e do Airbnb, transcritas literalmente |
 | JSON-LD `ProfessionalService` + `Person` | **`LodgingBusiness` + `FAQPage`** | Não há profissional nem registro em conselho |
 
 Não existe conselho profissional, registro, nem restrição ética de publicidade. **Existe**, em
@@ -176,7 +176,7 @@ reprovado como deve ser).
 - Na faixa escura (`ancora`), o âmbar **pode** ser texto (4.76:1) e o turquesa pode ser ícone
   (6.06:1). Em fundo claro, nenhum dos dois.
 - Na faixa de avaliações (`superficie-2`), texto é `ancora` ou `tinta`; `tinta-suave` só em texto
-  grande. A atribuição ("via Airbnb · mês") usa `ancora-quente` (6.12:1).
+  grande. A atribuição ("via Google · mês" ou "via Airbnb · mês") usa `ancora-quente` (6.12:1).
 - Ícones grandes da marca sobre fundo claro usam `ancora` (componente gráfico ≥ 3:1); o turquesa
   entra só como preenchimento das ondas a baixa opacidade, nunca como única informação.
 

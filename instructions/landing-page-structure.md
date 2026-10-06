@@ -168,7 +168,7 @@ embaixo, CTA visível sem rolar em 390×844.
 - Foto `por-do-sol.jpg` com máscara `a` (borda inferior em onda), `priority`,
   `fetchPriority="high"`, `objectPosition` no sol.
 - CTA primário WhatsApp. Abaixo, link de texto "ou veja as datas no Airbnb →".
-- Linha de prova: "★ 5,0 · Preferido dos hóspedes no Airbnb".
+- Linha de prova: "★ 5,0 no Google e no Airbnb · Preferido dos hóspedes".
 
 **Movimento:** h1 entra por linha (stagger 80ms) → subtítulo → CTA. A foto **não** anima de
 entrada (é o LCP); só o parallax CSS leve ao rolar. Nada começa com `opacity: 0` no HTML.
@@ -177,16 +177,17 @@ entrada (é o LCP); só o parallax CSS leve ao rolar. Nada começa com `opacity:
 
 ### 5.2 — `ProvaRapida`
 
-Faixa fina, fundo `creme`, sem ícones. Dados **confirmados no anúncio do Airbnb em 2026-10-05**:
+Faixa fina, fundo `creme`, sem ícones. Dados **confirmados no anúncio do Airbnb em 2026-10-05** e
+**no Google em 2026-10-06**:
 
-- **5,0** · nota média no Airbnb
-- **Preferido dos hóspedes**
-- **5** avaliações
+- **5,0** · nota média no Google e no Airbnb
+- **18** avaliações no Google
+- **Preferido dos hóspedes** no Airbnb
 - **Beira d'água** na represa de Três Marias
 
-Cada item é texto; o conjunto linka para o anúncio (`?src=prova`). Atualizar os números quando o
-anúncio mudar (`<<A CONFIRMAR: conferir nota e nº de avaliações antes do deploy>>` no checklist
-de deploy, não na página).
+Cada item é texto e linka para a sua fonte: as avaliações para a ficha do Google, "Preferido dos
+hóspedes" para o anúncio (`?src=prova`). Atualizar os números quando mudarem (conferir nota e nº de
+avaliações nas duas fontes no checklist de deploy, não na página).
 
 ---
 
@@ -271,16 +272,31 @@ CTA de dúvida (WhatsApp, origem `o-loft`).
 
 ### 5.6 — `Depoimentos` → **Avaliações**
 
-Fundo `superficie-2`, texto `ancora`/`tinta`. Título + "★ 5,0 · 5 avaliações no Airbnb".
+Fundo `superficie-2`, texto `ancora`/`tinta`. Título + "★ 5,0 · 18 avaliações no Google · 5 no
+Airbnb".
 
-- **5 cards** com o texto **transcrito literalmente** dos prints enviados pelo usuário: primeiro
-  nome do hóspede (como aparece no Airbnb), mês/ano, texto, "via Airbnb". Fraunces itálico.
+Duas fontes, misturadas (decisão do Douglas em 2026-10-06):
+- **Google**: 18 avaliações, 5,0, todas 5 estrelas. As 9 utilizáveis com texto estão transcritas
+  literalmente em `reference-files/avaliacoes-google.md` (capturadas em 2026-10-06).
+- **Airbnb**: 5 avaliações, 5,0. Entram quando chegarem os prints; não bloqueiam a seção.
+
+- **5 a 6 cards** selecionados entre as duas fontes. A curadoria é de *quais* entram, nunca do
+  texto: transcrição literal, sem resumir, cortar ou corrigir. Cada card: primeiro nome do hóspede
+  (como aparece na fonte), mês/ano, texto, atribuição `via Google` ou `via Airbnb`. Fraunces itálico.
+- Preferir avaliações que falam do que só o loft tem (vista da represa, piscina-praia, SUP, vinho de
+  cortesia, "ideal para casais") e variar o tamanho, para o masonry ter ritmo.
+- **Fica fora** qualquer avaliação de parente dos anfitriões ou de pessoa ligada ao projeto (a do
+  Douglas no Google, por exemplo).
+- Sem logo do Google ou do Airbnb: a atribuição é texto. Sem widget ou embed de avaliações (peso,
+  rastreador, §8).
 - Sem aspas gigantes, sem avatar, sem estrelas desenhadas por card, **sem carrossel**: no desktop,
-  colunas de alturas desiguais (masonry simples via CSS columns); no mobile, empilhado (as 5 são
-  curtas).
-- Link "ler todas no Airbnb" (`?src=avaliacoes`).
-- **Até os prints chegarem, a seção fica `exibir: false`.** A nota continua na ProvaRapida. Nenhum
-  texto de avaliação é escrito, resumido ou "melhorado".
+  colunas de alturas desiguais (masonry simples via CSS columns); no mobile, empilhado.
+- Dois links de texto: "ler todas no Google" (`https://maps.google.com/?cid=14045626813725772117`) e
+  "no Airbnb" (`?src=avaliacoes`).
+- A seção já pode ir para `exibir: true` com os cards do Google. Nenhum texto de avaliação é
+  escrito, resumido ou "melhorado".
+- Fotos que hóspedes postaram no Google **não** entram na página (direito de imagem é de cada
+  autor). Servem só de referência do que a cliente pode fotografar.
 
 ---
 
@@ -305,7 +321,9 @@ Abaixo: "Prefere reservar pelo Airbnb? Também dá →" (link, origem `como-rese
   acesso>>` e `<<A CONFIRMAR: distância/tempo a partir de BH>>`.
 - **Sem iframe do Google Maps** (pesado, rastreador, CLS). Em vez disso, um botão-link "Abrir no
   Google Maps" com a busca/pino que a cliente fornecer — `<<A CONFIRMAR: link do Google Maps>>` —
-  e, ao lado, uma foto (máscara `c`) ou o grafismo de onda.
+  e, ao lado, uma foto (máscara `c`) ou o grafismo de onda. Candidato: a ficha pública do Google
+  (`https://maps.google.com/?cid=14045626813725772117`), mas só entra se a cliente aprovar mostrar
+  a localização.
 - O Airbnb só mostra a localização exata após a reserva; respeitar a mesma política se os
   anfitriões preferirem (perguntar).
 
@@ -374,7 +392,8 @@ export function buildWhatsappUrl(phone: string, message: string) {
 | Sticky mobile | "Oi! Vim pelo site e queria ver a disponibilidade do loft." |
 
 Links do Airbnb levam `?src=hero|prova|como-reservar|avaliacoes|footer` — o Airbnb ignora o
-parâmetro, mas ele aparece no analytics quando houver.
+parâmetro, mas ele aparece no analytics quando houver. O link da ficha do Google (`?cid=`) não leva
+`src`; se houver analytics, o clique conta por evento.
 
 ---
 
@@ -399,10 +418,11 @@ parâmetro, mas ele aparece no analytics quando houver.
    confirmados, `priceRange` só se confirmado.
 2. **`FAQPage`** — só perguntas com resposta confirmada.
 
-**Sem `aggregateRating` no JSON-LD.** A nota 5,0 aparece na página, mas as diretrizes de
-review snippet do Google proíbem marcar avaliações agregadas de outro site (Airbnb) como se fossem
-do próprio negócio — e avaliações "self-serving" de `LocalBusiness` não geram estrelas de qualquer
-forma. Marcar daria risco de ação manual sem benefício.
+**Sem `aggregateRating` nem `review` no JSON-LD.** A nota 5,0 aparece na página, mas as
+diretrizes de review snippet do Google proíbem marcar avaliações agregadas de outro site (Airbnb) como
+se fossem do próprio negócio — e avaliações "self-serving" de `LocalBusiness` não geram estrelas de
+qualquer forma. Vale igual para as avaliações do Google transcritas na página: o Google já as mostra
+na ficha; marcá-las no site daria risco de ação manual sem benefício.
 
 **Sem nó `Person`.** Os anfitriões aparecem no texto; não há credencial profissional a declarar.
 
@@ -457,10 +477,12 @@ sugerir à cliente.
 ## 10. Informações que faltam
 
 Confirmado até aqui: nome, cidade, WhatsApp, Instagram, link do Airbnb, anfitriões, capacidade,
-comodidades do anúncio, nota 5,0 / 5 avaliações / Preferido dos hóspedes.
+comodidades do anúncio, nota 5,0 / 5 avaliações / Preferido dos hóspedes (Airbnb), nota 5,0 / 18
+avaliações e textos das avaliações (Google, 2026-10-06). Fotos de hóspedes no Google: não usar.
 
 Falta:
-- [ ] Prints das 5 avaliações do Airbnb (para transcrição literal)
+- [ ] Prints das 5 avaliações do Airbnb (opcional: o Google já cobre a seção; ver
+  `reference-files/avaliacoes-google.md`)
 - [ ] Preço ou faixa de preço — exibe ou não?
 - [ ] Horários de check-in e check-out
 - [ ] Café da manhã: incluso ou à parte?
