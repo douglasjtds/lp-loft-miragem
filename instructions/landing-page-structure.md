@@ -219,13 +219,23 @@ desenhado e visível.
 
 - Grid **assimétrico**: a 1ª foto ocupa 2 colunas × 2 linhas (máscara `d`), as demais
   retangulares retas. Mobile: 2 colunas, a 1ª em largura total.
-- Hoje: 4 fotos (`por-do-sol`, `cafe-da-manha`, `mari-com-prancha`, `piscina-noite`). O componente
-  aceita de 4 a 12 sem mudar código — as fotos são uma lista em `content.ts`.
+- Hoje: 5 fotos, nesta ordem: `por-do-sol` (destaque), `duas-pranchas-logo`, `cafe-da-manha`,
+  `mari-com-prancha`, `piscina-noite`. O componente aceita de 4 a 12 itens sem mudar código — os
+  itens são uma lista em `content.ts`; foto nova = item novo na lista + linha no pipeline.
+- Se a autorização de `mari-com-prancha` não vier, ela sai da lista e `duas-pranchas-logo` cobre
+  o SUP sozinha.
 - Clique/Enter abre o **lightbox** (`ui/Lightbox.tsx`, `<dialog>` nativo): foto inteira, legenda,
   contador "2 / 4", setas ←/→, `Esc`, foco preso e devolvido.
 - Miniaturas: `loading="lazy"`, `sizes` por coluna; lightbox carrega a versão grande só ao abrir.
 - Cada foto tem `alt` real e uma legenda curta em `content.ts`.
 - Link ao fim: "mais fotos no Instagram @loft_miragem".
+
+**Vídeo (futuro — só o modelo de dados agora).** O item da galeria é uma união:
+`{ tipo: 'foto', src, alt, legenda }` | `{ tipo: 'video', src, poster, alt, legenda }`.
+Hoje só existem fotos e o componente só precisa renderizar `foto`. Quando chegar vídeo: na grade,
+o `poster` estático com ícone de play; o `<video>` (`preload="none"`, `muted`, `playsinline`,
+MP4 H.264 + WebM, ≤ 6s, ≤ 1MB) só é criado dentro do lightbox. Sem autoplay na grade; com
+reduced-motion, o lightbox mostra o poster e o vídeo só toca por ação do usuário.
 
 ---
 
@@ -457,5 +467,7 @@ Falta:
 - [ ] Localização: bairro/referência, link do Google Maps, distância de BH — e se pode ser pública
 - [ ] Autorização de uso de imagem da pessoa em `mari-com-prancha.jpg`
 - [ ] Mais fotos para a galeria (interior, mezanino, banheiro, cozinha, vista de dia)
+- [ ] Original em resolução cheia de `duas-pranchas-logo.jpg` (a recebida tem 640px)
+- [ ] Vídeos curtos (opcional): loops de 4–6s, sem pessoa identificável ou com autorização
 - [ ] Domínio
 - [ ] Crédito do desenvolvedor no footer

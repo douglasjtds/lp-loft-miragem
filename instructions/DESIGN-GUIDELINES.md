@@ -336,13 +336,20 @@ anime.js por subpath e `dynamic import` após a hidratação, em `createScope()`
 | `por-do-sol.jpg` (1440×1920) | Pôr do sol sobre a represa visto do mezanino, através da rede de corda; piscina-praia embaixo | **Hero** (`priority`) + galeria | A foto mais valiosa: é o conceito da marca fotografado |
 | `cafe-da-manha.jpg` (1440×1920) | Bandeja de café flutuando na piscina, cabana preta e céu azul ao fundo | Experiência — manhã + galeria | Mostra a arquitetura e a piscina-praia de dia |
 | `mari-com-prancha.jpg` (3072×4096) | Mulher com a prancha de SUP com a logo, na margem da represa | Experiência — tarde + galeria | **Pessoa identificável** → `<<A CONFIRMAR: autorização de uso de imagem>>` |
+| `duas-pranchas-logo.jpg` (640×853) | Duas pranchas de SUP com a logo na represa ao pôr do sol, vista de quem está sentado nelas (só pernas e braços) | Galeria | Sem pessoa identificável → **substituto de `mari-com-prancha` na galeria** se a autorização não vier. Resolução baixa: lightbox limitado a 640px, sem upscale. `<<A CONFIRMAR: original em resolução cheia>>` |
 | `piscina-noite.jpg` (1440×1800) | Piscina iluminada em azul à noite, interior do loft pela vidraça | Experiência — noite + galeria | Muito escura; recorte e exposição tratados no pipeline |
 | `POUSADA LOGO.png` | Logo empilhada com fundo transparente | Footer (versão clara), og-image | Fonte do monograma SVG |
 
-**O acervo é pequeno.** Com 4 fotos, a galeria repete as fotos da Experiência. A página funciona
+**O acervo é pequeno.** Com 5 fotos, a galeria ainda repete as fotos da Experiência. A página funciona
 assim, mas fica mais forte com 8–12 fotos (interior do loft, mezanino, banheiro, cozinha, vista de
 dia, SUP na água). `<<A CONFIRMAR: mais fotos para a galeria>>` — os destaques "Tour" e
 "Atrativos" do Instagram provavelmente já têm o material.
+
+**Vídeo (futuro, não implementar agora).** Nada de vídeo no fundo do herói: disputa o LCP com
+`por-do-sol`, estoura o peso da primeira carga e é o clichê da §3. Quando houver vídeos, eles
+entram como item da galeria (poster estático na grade, vídeo só no lightbox) — ver
+landing-page-structure §5.4. Opção registrada, não decidida: um loop curto e mudo no momento
+**tarde** da Experiência.
 
 ### Regras
 

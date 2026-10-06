@@ -21,7 +21,8 @@ Leia DESIGN-GUIDELINES.md e landing-page-structure.md por inteiro antes de escre
 PRIMEIRO, confirme a auditoria (já feita no planejamento — só valide):
 1. Fontes: Fraunces e Nunito Sans, Google Fonts, OFL. Nenhuma fonte veio da cliente.
 2. Ícones da marca: não existem; serão derivados do emblema da logo (Fase 2).
-3. Fotos: 4, de momentos diferentes; mari-com-prancha.jpg tem pessoa identificável.
+3. Fotos: 5, de momentos diferentes; mari-com-prancha.jpg tem pessoa identificável;
+   duas-pranchas-logo.jpg tem só 640px (sem upscale).
 
 DEPOIS, crie o scaffold copiando assets/scaffold/ da skill para a raiz, e ajuste:
 - package.json com o nome "lp-loft-miragem"
@@ -97,6 +98,7 @@ Pipeline de imagens (scripts/processar-fotos.mjs). Originais em reference-files/
    cafe-da-manha.jpg    → manha-cafe
    mari-com-prancha.jpg → tarde-sup (reduzir: original 3072x4096 / 1,5MB)
    piscina-noite.jpg    → noite-piscina (levantar sombras sem estourar o azul)
+   duas-pranchas-logo.jpg → galeria-pranchas (original 640x853: sem upscale; lightbox = 640px)
    + versões "grande" para o lightbox
 2. Tratamento leve e unificado (DESIGN-GUIDELINES §9): aquecer 2–3%, turquesa da piscina −8%
    de saturação. NÃO igualar os três horários. Antes/depois na página montada.
@@ -119,7 +121,7 @@ Preencha src/config/content.ts com TODA a copy (landing-page-structure §5 e §6
 DESIGN-GUIDELINES §11).
 
 - Remova o conteúdo de ParaQuem, Metodo e Sobre; crie os blocos de Experiencia (3 momentos),
-  Galeria (lista de fotos com alt e legenda), OLoft (comodidades confirmadas + marcadores),
+  Galeria (lista de itens com alt e legenda; tipo GaleriaItem = foto | video, hoje só fotos), OLoft (comodidades confirmadas + marcadores),
   Localizacao, Avaliações (exibir: false, lista vazia) e Como reservar.
 - O h1 é a frase da cliente: "A vista mais exclusiva de Três Marias".
 - Dados confirmados: estão na §5.2 e §5.5 do landing-page-structure. Todo o resto é
