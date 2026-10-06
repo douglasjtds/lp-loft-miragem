@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { BrandIcon } from "@/components/ui/BrandIcon";
 import { Button, type ButtonVariant } from "@/components/ui/Button";
 import { Eyebrow } from "@/components/ui/Eyebrow";
+import { OrganicImage } from "@/components/ui/OrganicImage";
 import {
   ORGANIC_SHAPES,
   organicClip,
@@ -44,6 +45,38 @@ const amostrasDeMascara = [
   "bg-acento",
   "bg-superficie-2",
 ];
+
+/**
+ * As fotos tratadas na Fase 3 (scripts/processar-fotos.mjs). O `antes` só existe depois de
+ * `node scripts/processar-fotos.mjs --antes`: fica fora do git e sai junto com esta página.
+ */
+const fotos = [
+  {
+    nome: "hero-por-do-sol",
+    rotulo: "Herói · pôr do sol",
+    alt: "Pôr do sol sobre a represa visto do mezanino, através da rede de corda",
+  },
+  {
+    nome: "manha-cafe",
+    rotulo: "Manhã",
+    alt: "Bandeja de café da manhã flutuando na piscina-praia, cabana preta ao fundo",
+  },
+  {
+    nome: "tarde-sup",
+    rotulo: "Tarde",
+    alt: "Mulher com a prancha de SUP do loft na margem da represa",
+  },
+  {
+    nome: "noite-piscina",
+    rotulo: "Noite",
+    alt: "Piscina iluminada em azul à noite, com o interior do loft aceso pela vidraça",
+  },
+  {
+    nome: "galeria-pranchas",
+    rotulo: "Galeria · 640px",
+    alt: "Duas pranchas de SUP com a logo na represa ao pôr do sol",
+  },
+] as const;
 
 /** Classes escritas por extenso: o scanner do Tailwind não resolve nome montado em runtime. */
 const amostraDeFonte: Record<keyof typeof fonts, string> = {
@@ -511,7 +544,7 @@ export default function Styleguide() {
       <section className="container-lp mb-16" aria-labelledby="c-organic">
         <Titulo
           id="c-organic"
-          nota="A onda da logo vira borda de um ou dois lados; os outros ficam retos, com canto vivo. Sobre cor chapada até a Fase 3 trazer as fotos: a forma se julga melhor sem a foto distraindo. Nenhuma pode parecer border-radius."
+          nota="A onda da logo vira borda de um ou dois lados; os outros ficam retos, com canto vivo. Aqui sobre cor chapada, porque a forma se julga melhor sem a foto distraindo; com as fotos, logo abaixo, na seção Fotos. Nenhuma pode parecer border-radius."
         >
           As 4 máscaras de onda
         </Titulo>
@@ -644,6 +677,111 @@ export default function Styleguide() {
             48px é o mínimo da §5: o traço fica em 1,5px.
           </p>
         </div>
+      </section>
+
+      <section className="container-lp mb-16" aria-labelledby="c-fotos">
+        <Titulo
+          id="c-fotos"
+          nota="Tratamento leve e unificado (§9): aquecer 2,5% e tirar 8% de saturação do turquesa. Os três horários continuam diferentes de propósito, é esse contraste que conta o dia. A noite tem sombras levantadas sem mexer no azul da piscina."
+        >
+          Fotos
+        </Titulo>
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+          <OrganicImage
+            src="/images/hero-por-do-sol.jpg"
+            alt={fotos[0].alt}
+            shape="a"
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            className="aspect-[4/5] w-full"
+          />
+          <ul className="grid grid-cols-3 gap-3 self-end sm:gap-5">
+            {fotos.slice(1, 4).map((foto) => (
+              <li key={foto.nome}>
+                <OrganicImage
+                  src={`/images/${foto.nome}.jpg`}
+                  alt={foto.alt}
+                  shape="b"
+                  sizes="(min-width: 1024px) 18vw, 30vw"
+                  className="aspect-[3/4] w-full"
+                />
+                <Eyebrow className="text-acento-texto mt-3">
+                  {foto.rotulo}
+                </Eyebrow>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <p className="eyebrow text-acento-texto mt-12 mb-3">
+          Antes e depois
+        </p>
+        <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          {fotos.map((foto) => (
+            <li key={foto.nome}>
+              <div className="grid grid-cols-2 gap-2">
+                {(["antes", "depois"] as const).map((lado) => (
+                  <figure key={lado}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={`/images/${lado === "antes" ? "antes/" : ""}${foto.nome}.jpg`}
+                      alt={lado === "antes" ? "" : foto.alt}
+                      className="aspect-[3/4] w-full object-cover"
+                    />
+                    <figcaption className="caption text-tinta-suave mt-1">
+                      {lado}
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+              <p className="caption text-tinta mt-2">{foto.rotulo}</p>
+            </li>
+          ))}
+        </ul>
+
+        <p className="eyebrow text-acento-texto mt-12 mb-3">
+          Logo, ícones do navegador e og-image
+        </p>
+        <div className="flex flex-wrap items-center gap-6">
+          <div className="bg-papel p-6">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/logo.png"
+              alt="Logo do Loft Miragem"
+              width={240}
+              height={173}
+            />
+          </div>
+          <div className="bg-ancora p-6">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/logo-clara.png"
+              alt="Logo do Loft Miragem, versão clara para o footer"
+              width={240}
+              height={173}
+            />
+          </div>
+          <div className="flex items-end gap-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/favicon.ico" alt="" width={16} height={16} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/favicon.ico" alt="" width={32} height={32} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/apple-touch-icon.png"
+              alt="Ícone de tela inicial do iPhone"
+              width={90}
+              height={90}
+            />
+          </div>
+        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/og-image.jpg"
+          alt="Imagem de compartilhamento: pôr do sol sobre a represa e a logo"
+          width={600}
+          height={315}
+          className="mt-6 h-auto max-w-full"
+        />
       </section>
       <section className="container-lp mb-16" aria-labelledby="c-whatsapp">
         <Titulo
