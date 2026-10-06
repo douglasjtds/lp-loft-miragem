@@ -1,0 +1,358 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Tokens — landing-page-structure.md §4, DESIGN-GUIDELINES.md §3 e §4.
+
+   Regra dura do projeto: nenhum valor hex existe fora deste bloco e de
+   src/config/brand.ts. Nada de `text-[#1a2b3c]` em componente.
+
+   ⚠️ OS VALORES ABAIXO SÃO MARCADORES DE POSIÇÃO — uma escala neutra,
+   deliberadamente sem personalidade, para que ninguém publique por engano
+   achando que é a marca. Substitua pelos hexes do manual da cliente, mantenha
+   `brand.ts` idêntico, e rode `node scripts/contraste.mjs` antes de seguir.
+
+   Os NOMES são papéis, não cores. É o que permite a mesma base servir uma
+   marca verde-e-terracota e um escritório azul-marinho sem renomear nada.
+
+   Não há tema escuro — está explicitamente fora de escopo.
+   ========================================================================== */
+
+@theme {
+  --color-ancora: #262b30;
+  --color-ancora-quente: #3a4148;
+  --color-decor: #9aa0a6;
+  --color-acento: #6b7f99;
+  --color-acento-texto: #4f627a;
+  --color-superficie-2: #c9cdd2;
+  --color-papel: #fbfbfa;
+  --color-creme: #f1f1ef;
+  --color-tinta: #1b1d1f;
+  --color-tinta-suave: #55595e;
+
+  /* As três famílias vêm do next/font (layout.tsx), que injeta estas custom
+     properties no <html>. Os nomes aqui são PAPÉIS: trocar a família da marca é
+     mexer só em layout.tsx, sem tocar em nenhum componente.
+
+     O fallback de cada cadeia é escolhido para minimizar o salto do `display: swap`
+     — ajuste-o junto com a fonte: a substituta de sistema precisa ser próxima em
+     altura-x, senão a troca no meio do carregamento salta a linha inteira. */
+  --font-display: var(--font-display-family), Georgia, "Times New Roman", serif;
+  --font-ui: var(--font-ui-family), system-ui, -apple-system, sans-serif;
+  /* Arquivo separado, só para <em> — ver a nota na instância do layout.tsx. */
+  --font-ui-italic:
+    var(--font-ui-italic-family), system-ui, -apple-system, sans-serif;
+  --font-editorial:
+    var(--font-editorial-family), Georgia, "Times New Roman", serif;
+}
+
+/* ==========================================================================
+   Escala tipográfica fluida — DESIGN-GUIDELINES.md §4.
+
+   Utilitários, não elementos: quem decide o nível semântico é o HTML (h1/h2/p),
+   quem decide o tamanho é a classe. Um h2 pode ser display-md sem virar h3.
+
+   ⚠️ `display-*` está calibrado para uma SERIFADA de alto contraste: peso 300,
+   tracking negativo, entrelinha 1.05. Isso não é neutro — outra anatomia pede o
+   contrário. Uma condensada de caixa alta (Bebas, Oswald) precisa de tracking
+   POSITIVO e entrelinha abaixo de 1, porque fecha demais em tamanho grande e não
+   tem descendentes. Recalibre junto com a fonte, na Fase 1.
+
+   E não declare `text-transform` aqui: se a fonte já é caixa alta por desenho,
+   forçar no CSS amarra o utilitário a ela.
+   ========================================================================== */
+
+@utility display-xl {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.75rem, 7vw, 5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+@utility display-lg {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+
+@utility display-md {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  line-height: 1.2;
+}
+
+@utility body-lg {
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  line-height: 1.7;
+}
+
+@utility body {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+@utility caption {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* O único elemento em caixa alta da página inteira. */
+@utility eyebrow {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Medida de leitura: 60–72 caracteres. Parágrafo mais largo que isso é o erro de
+   layout mais comum e mais fatal neste projeto (DESIGN-GUIDELINES.md §4). */
+@utility medida {
+  max-width: 62ch;
+}
+
+/* ==========================================================================
+   Medidas de layout — DESIGN-GUIDELINES.md §7.
+
+   Existem como utilitário, e não repetidas em cada seção, por um motivo prático: o
+   ritmo vertical da página inteira vem de UM lugar. Section.tsx aplica `secao-y` e
+   nunca declara margin — seções adjacentes não têm como colapsar nem cancelar espaço.
+   ========================================================================== */
+
+@utility secao-y {
+  padding-block: clamp(4rem, 10vw, 8rem);
+}
+
+/* max-w-6xl (1152px) + a goteira lateral da §7. Serve seções, header e footer. */
+@utility container-lp {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 3rem);
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* As âncoras (#metodo, #como-funciona, #sobre, #duvidas) precisam parar abaixo
+       do header fixo, não atrás dele. */
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-papel);
+    color: var(--color-tinta);
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    line-height: 1.7;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* A família UI é carregada em 400/500/600 e nunca em 700: o padrão `bold` do
+     navegador cairia em bold sintético (traço engordado, feio no corpo de texto).
+     Se você carregar 700, ajuste este valor — senão o negrito nunca aparece. */
+  strong,
+  b {
+    font-weight: 600;
+  }
+
+  /* O itálico real, no arquivo próprio. Hoje só existe ênfase no corpo de texto, que
+     é font-ui; se um dia aparecer um <em> dentro de um bloco editorial ou display,
+     esta regra precisa de escopo — ela trocaria a família no meio da frase. */
+  em,
+  i {
+    font-family: var(--font-ui-italic);
+    font-style: italic;
+  }
+
+  /* Seleção legível e dentro da paleta. O par precisa passar AA como qualquer
+     outro texto — confira no `scripts/contraste.mjs` depois de trocar os hexes. */
+  ::selection {
+    background-color: var(--color-ancora);
+    color: var(--color-superficie-2);
+  }
+
+  /* Foco visível é obrigatório em 100% dos interativos (DESIGN-GUIDELINES.md §10).
+     Nenhum componente pode zerar isto sem oferecer substituto. */
+  :focus-visible {
+    outline: 2px solid var(--color-acento-texto);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Imagem nunca estoura o container nem vira baseline de linha. */
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+/* ==========================================================================
+   Reveal de seção — DESIGN-GUIDELINES.md §8, item 2.
+
+   O movimento que mais se repete na página é o mais barato: transição de CSS
+   disparada por um IntersectionObserver (src/components/motion/Reveal.tsx),
+   zero bytes de biblioteca.
+
+   O atributo `data-reveal` NÃO existe no HTML do servidor — o Reveal o escreve
+   depois da hidratação, e só no que ainda está abaixo da dobra. Sem JS, nenhuma
+   destas regras chega a casar e a página fica visível.
+   ========================================================================== */
+
+@layer components {
+  [data-reveal="oculto"] {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  [data-reveal="visivel"] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 500ms ease-out,
+      transform 500ms ease-out;
+    transition-delay: var(--reveal-atraso, 0ms);
+  }
+}
+
+/* ==========================================================================
+   Parallax de scroll — DESIGN-GUIDELINES.md §8 (linha "Parallax de foto").
+
+   Scroll-driven animation nativa: `animation-timeline: view()` amarra o percurso
+   do keyframe à travessia do elemento pela viewport. Sem listener, sem rAF, sem
+   IntersectionObserver — 0 KB somados ao orçamento de ~15KB que o anime.js já usa.
+
+   Onde `animation-timeline` não existe, o `@supports` não casa, a regra nunca é
+   aplicada e a página fica exatamente como estava: fotos paradas. É degradação
+   silenciosa de propósito — um fallback em JS custaria mais do que o efeito vale.
+
+   O alvo é a <img> dentro do OrganicImage, nunca o wrapper: o wrapper tem o
+   clipPath e precisa ficar imóvel (ver OrganicImage.tsx).
+   ========================================================================== */
+
+@layer components {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      /* O wrapper do OrganicImage PUBLICA a timeline; a imagem lá dentro consome.
+         `animation-timeline: view()` direto na imagem não funciona: o wrapper tem
+         `overflow-hidden`, o que faz dele um scroll container, e `view()` resolve
+         contra o scroll container mais próximo. A imagem preenche o wrapper
+         exatamente e nunca se move em relação a ele — o progresso trava em 50% para
+         sempre. Nomeando a timeline no wrapper, o percurso passa a ser a travessia
+         DELE pela viewport, que é o que se queria desde o começo. */
+      [data-parallax-alvo] {
+        view-timeline-name: --parallax-foto;
+      }
+
+      /* Longhands, e nunca o shorthand `animation`.
+         O shorthand reescreve `animation-duration` para o valor inicial `0s`, e numa
+         timeline de progresso a duração PRECISA ser `auto` para o keyframe se
+         espalhar pelo percurso inteiro. Com `0s` a animação não morre nem falha —
+         ela congela em progresso 0.5, o que aqui significa translate 0: a foto fica
+         parada, com a escala aplicada, e parece que o parallax "só não funciona".
+         É um erro silencioso; por isso a regra é escrita por extenso. */
+      [data-parallax-foto] {
+        animation-name: deriva-foto;
+        animation-duration: auto;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --parallax-foto;
+        /* `cover` gasta o percurso inteiro na travessia da viewport. Com
+           `entry`/`exit` o movimento se concentraria nas bordas e a foto ficaria
+           congelada justamente enquanto está sendo olhada. */
+        animation-range: cover 0% cover 100%;
+      }
+
+      [data-parallax-blob] {
+        animation-name: deriva-blob;
+        animation-duration: auto;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: view();
+        animation-range: cover 0% cover 100%;
+      }
+    }
+  }
+
+  /* O `scale` não é efeito, é requisito: sem ele o translate de ±3.5% descobre a
+     borda do clipPath e abre uma faixa vazia dentro da máscara. 7% de curso, 12%
+     de folga.
+
+     E ele é CONSTANTE nos dois keyframes. Nada de zoom na entrada: a foto do herói
+     é a candidata a LCP, e animar a escala do elemento LCP é o que a §8.3 proíbe. */
+  @keyframes deriva-foto {
+    from {
+      transform: translate3d(0, -3.5%, 0) scale(1.12);
+    }
+    to {
+      transform: translate3d(0, 3.5%, 0) scale(1.12);
+    }
+  }
+
+  /* Contraponto: o blob sobe enquanto a foto desce. É o que cria a sensação de
+     profundidade — dois planos em velocidades diferentes, não um bloco deslizando. */
+  @keyframes deriva-blob {
+    from {
+      transform: translate3d(0, 2.5rem, 0);
+    }
+    to {
+      transform: translate3d(0, -2.5rem, 0);
+    }
+  }
+}
+
+/* ==========================================================================
+   prefers-reduced-motion — DESIGN-GUIDELINES.md §8, item 4.
+
+   Não é opcional e não é degradação: nesse modo a página é estática e o conteúdo
+   fica 100% visível. Como a Fase 7 aplica o estado inicial das animações via JS
+   (nunca no HTML), desligar tudo aqui não esconde nada.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Rede de segurança do reveal: o Reveal.tsx já não esconde nada neste modo, e ainda
+     limpa o atributo se a preferência mudar com a página aberta. Isto cobre o caso em
+     que a preferência muda no exato meio da transição — conteúdo escondido por causa
+     de acessibilidade seria o pior desfecho possível deste arquivo. */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Rede de segurança do parallax. O `@media (no-preference)` lá em cima já impede
+     a animação de ser declarada; isto cobre a preferência mudando com a página
+     aberta. E não basta zerar a duração como a regra `*` acima faz: numa animação
+     de scroll-timeline, duração curta não para o movimento — ela cola o elemento
+     no ÚLTIMO keyframe, e a foto ficaria torta e ampliada para sempre. Só `animation:
+     none` desfaz de verdade. */
+  [data-parallax-foto],
+  [data-parallax-blob] {
+    animation: none !important;
+    transform: none !important;
+  }
+}

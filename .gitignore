@@ -1,0 +1,18 @@
+# dependências
+node_modules/
+
+# build do Next
+.next/
+out/
+*.tsbuildinfo
+
+# ambiente e deploy
+.env*.local
+.vercel
+
+# sistema e logs
+.DS_Store
+npm-debug.log*
+
+# reference-files/ fica VERSIONADO de propósito: é a fonte do scripts/processar-fotos.mjs
+# e já está no histórico. Não entra no build (o Next só serve public/).
