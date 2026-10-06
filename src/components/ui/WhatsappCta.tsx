@@ -25,7 +25,7 @@ type WhatsappCtaProps = {
   size?: ButtonSize;
   className?: string;
   /**
-   * Rótulo acessível. O texto visível costuma ser curto ("Agendar consulta"), e o
+   * Rótulo acessível. O texto visível costuma ser curto ("Chamar no WhatsApp"), e o
    * leitor de tela precisa saber que o link abre o WhatsApp e sai do site.
    */
   ariaLabel?: string;
@@ -37,7 +37,7 @@ export function WhatsappCta({
   variant = "primary",
   size = "md",
   className,
-  ariaLabel = "Agendar consulta pelo WhatsApp",
+  ariaLabel = "Chamar no WhatsApp (abre em nova aba)",
   children,
 }: WhatsappCtaProps) {
   const link = linkDoCta(origem);

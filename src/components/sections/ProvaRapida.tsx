@@ -5,13 +5,9 @@ import { provaRapida } from "@/config/content";
 /**
  * Faixa de provas objetivas — landing-page-structure.md §5.2.
  *
- * Hoje ela NÃO renderiza: `provaRapida.exibir` é `false` porque nenhum dos três dados
- * foi confirmado pela cliente, e a especificação é literal — "só entram dados que a
- * cliente confirmar; se não houver dado, corta a seção". Uma faixa de credibilidade
- * feita de marcadores produz exatamente o efeito contrário do pretendido.
- *
- * O componente fica pronto: quando os itens chegarem, basta virar `exibir` em
- * content.ts. Sem ícone decorativo — são dados, e dado não precisa de enfeite.
+ * Só dados confirmados (Airbnb e Google). Cada item linka para a sua fonte quando há
+ * uma. Sem ícone decorativo: são dados, e dado não precisa de enfeite.
+ * Render mínimo; o desenho final é da Fase 5.
  */
 
 export function ProvaRapida() {
@@ -21,8 +17,24 @@ export function ProvaRapida() {
     <Section background="creme" spacing="faixa">
       <ul className="caption text-tinta-suave flex flex-wrap items-center justify-center gap-x-10 gap-y-2 text-center">
         {provaRapida.itens.map((item) => (
-          <li key={item}>
-            <Pendencia>{item}</Pendencia>
+          <li key={item.destaque}>
+            {item.href ? (
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={item.ariaLabel}
+                className="underline decoration-acento underline-offset-4"
+              >
+                <strong className="text-ancora">{item.destaque}</strong>{" "}
+                <Pendencia>{item.texto}</Pendencia>
+              </a>
+            ) : (
+              <>
+                <strong className="text-ancora">{item.destaque}</strong>{" "}
+                <Pendencia>{item.texto}</Pendencia>
+              </>
+            )}
           </li>
         ))}
       </ul>

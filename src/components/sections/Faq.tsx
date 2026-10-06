@@ -1,7 +1,6 @@
 import { ChevronDown } from "lucide-react";
 
 import { Reveal } from "@/components/motion/Reveal";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Pendencia } from "@/components/ui/Pendencia";
 import { Section } from "@/components/ui/Section";
 import { faq } from "@/config/content";
@@ -25,9 +24,8 @@ export function Faq() {
   return (
     <Section id={faq.id} background="creme" aria-labelledby="faq-titulo">
       <Reveal>
-        <Eyebrow className="text-acento-texto">{faq.eyebrow}</Eyebrow>
-
-        <h2 id="faq-titulo" className="display-lg medida text-ancora mt-4">
+        {/* Sem eyebrow: o Como reservar, duas seções antes, já usou o dele (§4). */}
+        <h2 id="faq-titulo" className="display-lg medida text-ancora">
           {faq.titulo}
         </h2>
       </Reveal>

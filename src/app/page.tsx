@@ -6,23 +6,18 @@ import { CtaFinal } from "@/components/sections/CtaFinal";
 import { Depoimentos } from "@/components/sections/Depoimentos";
 import { Faq } from "@/components/sections/Faq";
 import { Hero } from "@/components/sections/Hero";
-import { Metodo } from "@/components/sections/Metodo";
-import { ParaQuem } from "@/components/sections/ParaQuem";
 import { ProvaRapida } from "@/components/sections/ProvaRapida";
-import { Sobre } from "@/components/sections/Sobre";
 import { header } from "@/config/content";
 import { jsonLd } from "@/lib/schema";
 
 /**
  * Composição das seções da landing page — e nada mais. Nenhuma lógica, nenhum texto.
  *
- * A ordem é o argumento da §5, e não uma lista: quem ela é → por que confiar → você é
- * atendida aqui → como ela trabalha → o que acontece na prática → quem é ela de verdade
- * → outros confiaram → dúvidas → agir.
+ * A ordem é o argumento da §5, e não uma lista: me imagino lá → é real → cabe no que
+ * preciso → reservar é simples → agir.
  *
- * `ProvaRapida` e `Depoimentos` decidem sozinhas não renderizar enquanto não houver dado
- * confirmado da cliente (ver os dois componentes). Ficam montadas aqui de propósito:
- * quando os dados chegarem, o único arquivo que muda é content.ts.
+ * Experiencia, Galeria, OLoft e Localizacao entram na Fase 5 (o conteúdo já está em
+ * content.ts). `Depoimentos` renderiza as Avaliações; `ComoFunciona`, o Como reservar.
  */
 export default function Home() {
   return (
@@ -55,11 +50,8 @@ export default function Home() {
       <main id="conteudo" className="flex-1">
         <Hero />
         <ProvaRapida />
-        <ParaQuem />
-        <Metodo />
-        <ComoFunciona />
-        <Sobre />
         <Depoimentos />
+        <ComoFunciona />
         <Faq />
         <CtaFinal />
       </main>

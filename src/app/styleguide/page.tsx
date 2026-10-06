@@ -506,7 +506,7 @@ export default function Styleguide() {
                 {variant} · {nota}
               </Eyebrow>
               <div className="mt-3 flex flex-wrap items-center gap-4">
-                <Button variant={variant}>Agendar consulta</Button>
+                <Button variant={variant}>Chamar no WhatsApp</Button>
                 <Button variant={variant} href="#c-button">
                   Como link (&lt;a&gt;)
                 </Button>
@@ -712,9 +712,7 @@ export default function Styleguide() {
           </ul>
         </div>
 
-        <p className="eyebrow text-acento-texto mt-12 mb-3">
-          Antes e depois
-        </p>
+        <p className="eyebrow text-acento-texto mt-12 mb-3">Antes e depois</p>
         <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {fotos.map((foto) => (
             <li key={foto.nome}>
@@ -793,7 +791,7 @@ export default function Styleguide() {
         <ul className="space-y-6">
           {(Object.keys(mensagensPorOrigem) as CtaOrigem[]).map((origem) => (
             <li key={origem} className="flex flex-wrap items-center gap-4">
-              <WhatsappCta origem={origem}>Agendar consulta</WhatsappCta>
+              <WhatsappCta origem={origem}>Chamar no WhatsApp</WhatsappCta>
               <div>
                 <Eyebrow className="text-acento-texto">
                   origem=&quot;{origem}&quot;

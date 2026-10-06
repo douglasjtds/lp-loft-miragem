@@ -22,7 +22,12 @@ import { mensagensPorOrigem } from "@/config/content";
  * de lá não compila incompleto, e isso é de propósito.
  */
 export type CtaOrigem =
-  "hero" | "header" | "como-funciona" | "cta-final" | "sticky-mobile";
+  | "header"
+  | "hero"
+  | "o-loft"
+  | "como-reservar"
+  | "cta-final"
+  | "sticky-mobile";
 
 /**
  * @param phone Formato internacional, só dígitos: 55 + DDD + número. Vem de brand.ts.

@@ -1,54 +1,48 @@
 import { Reveal } from "@/components/motion/Reveal";
-import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Pendencia } from "@/components/ui/Pendencia";
 import { Section } from "@/components/ui/Section";
-import { depoimentos } from "@/config/content";
+import { avaliacoes } from "@/config/content";
 
 /**
- * Depoimentos — landing-page-structure.md §5.7.
+ * Avaliações — landing-page-structure.md §5.6.
  *
- * ⚠️ HOJE ESTA SEÇÃO NÃO RENDERIZA, e isso é decisão de especificação, não pendência
- * de implementação: `depoimentos.exibir` é `false` porque não existe nenhum depoimento
- * real e autorizado. "Se não houver depoimento real e autorizado, a seção não existe."
+ * Avaliações reais do Google (e do Airbnb, quando chegarem os prints), transcritas
+ * literalmente em content.ts. O componente nunca edita, corta nem resume o texto.
  *
- * Depoimento inventado é fraude e destrói exatamente a percepção de seriedade que é o
- * objetivo nº 1 da página — além do risco ético: o Código de Ética do CFN restringe
- * publicidade com resultado de paciente. Nada de antes e depois.
+ * Fundo superficie-2 com texto ancora. Tipografia editorial (Fraunces itálico). Sem
+ * aspas gigantes, sem avatar, sem estrelas por card, sem carrossel.
  *
- * TODO(cliente): quando chegarem 2 ou 3 depoimentos reais, com autorização POR ESCRITO,
- * preencher `depoimentos.itens` em content.ts (texto + nome e inicial do sobrenome) e
- * virar `exibir` para true. O componente já está pronto e não precisa de alteração.
- *
- * Fundo superficie-2 com texto ancora. Tipografia editorial — o único
- * lugar da página, junto com pull quotes, onde a EB Garamond aparece (§4). Sem aspas
- * gigantes decorativas e sem avatar genérico.
+ * Render mínimo para compilar com o conteúdo da Fase 4; masonry e links finais são da
+ * Fase 5.
  */
 
 export function Depoimentos() {
-  if (!depoimentos.exibir || depoimentos.itens.length === 0) return null;
+  if (!avaliacoes.exibir || avaliacoes.itens.length === 0) return null;
 
   return (
     <Section
+      id={avaliacoes.id}
       background="superficie"
-      aria-labelledby="depoimentos-titulo"
+      aria-labelledby="avaliacoes-titulo"
       className="text-ancora"
     >
       <Reveal>
-        <Eyebrow>{depoimentos.eyebrow}</Eyebrow>
-
-        <h2 id="depoimentos-titulo" className="display-lg medida mt-4">
-          {depoimentos.titulo}
+        <h2 id="avaliacoes-titulo" className="display-lg medida">
+          {avaliacoes.titulo}
         </h2>
+        <p className="caption font-ui mt-4">{avaliacoes.resumo}</p>
       </Reveal>
 
       <Reveal atraso={120}>
         <div className="mt-14 grid gap-12 md:grid-cols-2 md:gap-16">
-          {depoimentos.itens.map((depoimento) => (
-            <figure key={depoimento.autora}>
+          {avaliacoes.itens.map((avaliacao) => (
+            <figure key={`${avaliacao.fonte}-${avaliacao.nome}`}>
               <blockquote className="font-editorial medida text-xl leading-relaxed sm:text-2xl">
-                {depoimento.texto}
+                <Pendencia>{avaliacao.texto}</Pendencia>
               </blockquote>
-              <figcaption className="caption font-ui mt-5">
-                {depoimento.autora}
+              <figcaption className="caption font-ui text-ancora-quente mt-5">
+                {avaliacao.nome} · {avaliacao.quando} ·{" "}
+                {avaliacoes.rotuloFonte[avaliacao.fonte]}
               </figcaption>
             </figure>
           ))}

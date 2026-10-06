@@ -4,7 +4,7 @@ import { OrganicImage } from "@/components/ui/OrganicImage";
 import { Pendencia } from "@/components/ui/Pendencia";
 import { Section } from "@/components/ui/Section";
 import { WhatsappCta } from "@/components/ui/WhatsappCta";
-import { comoFunciona } from "@/config/content";
+import { comoReservar as comoFunciona } from "@/config/content";
 
 /**
  * Como funciona — landing-page-structure.md §5.5.
@@ -36,7 +36,7 @@ export function ComoFunciona() {
     <Section
       id={comoFunciona.id}
       background="creme"
-      aria-labelledby="como-funciona-titulo"
+      aria-labelledby="como-reservar-titulo"
     >
       <Reveal>
         {/* 7/5 e não 6/6: metade-metade é o visual de template que a §7 rejeita, e o
@@ -50,7 +50,7 @@ export function ComoFunciona() {
             </Eyebrow>
 
             <h2
-              id="como-funciona-titulo"
+              id="como-reservar-titulo"
               className="display-lg medida text-ancora mt-4"
             >
               {comoFunciona.titulo}

@@ -69,11 +69,12 @@ export function Hero() {
             </WhatsappCta>
           </div>
 
+          {/* `data-anim="disponibilidade"` é o endereço que o HeroTimeline já conhece. */}
           <p
             data-anim="disponibilidade"
             className="caption text-tinta-suave mt-5"
           >
-            <Pendencia>{hero.disponibilidade}</Pendencia>
+            <Pendencia>{hero.prova}</Pendencia>
           </p>
         </div>
 
@@ -99,8 +100,8 @@ export function Hero() {
             parallax
             sizes="(min-width: 1024px) 42vw, (min-width: 640px) 22rem, 19rem"
             className="aspect-[4/5] w-full"
-            /* Mantém o rosto no terço superior quando a caixa corta mais que 4:5. */
-            objectPosition="50% 22%"
+            /* Mantém o sol no terço superior quando a caixa corta mais que 4:5. */
+            objectPosition={hero.foto.objectPosition}
           />
         </div>
       </div>

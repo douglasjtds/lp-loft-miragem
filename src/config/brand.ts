@@ -138,6 +138,11 @@ export const cidadeUf = `${profile.cidade}, ${profile.uf}`;
 /** "Calypso Martins e André Tertuliano". */
 export const anfitrioesFormatado = profile.anfitrioes.join(" e ");
 
+/** "Calypso e André". Para a copy em tom próximo (Como reservar, CTA final). */
+export const anfitrioesPrimeiroNome = profile.anfitrioes
+  .map((nome) => nome.split(" ")[0])
+  .join(" e ");
+
 /**
  * WhatsApp: a ação de conversão principal da página.
  *
@@ -167,6 +172,8 @@ export const whatsapp: {
 export const social: {
   instagram: { handle: string; url: string } | null;
   airbnb: { url: string } | null;
+  /** Ficha do Google (avaliações). Fora do `sameAs` do JSON-LD (§7). */
+  google: { url: string } | null;
 } = {
   instagram: {
     handle: "@loft_miragem",
@@ -174,6 +181,9 @@ export const social: {
   },
   airbnb: {
     url: "https://www.airbnb.com.br/rooms/1440093946948725210",
+  },
+  google: {
+    url: "https://maps.google.com/?cid=14045626813725772117",
   },
 };
 
@@ -189,6 +199,7 @@ export const brand = {
   profile,
   cidadeUf,
   anfitrioesFormatado,
+  anfitrioesPrimeiroNome,
   whatsapp,
   social,
   site,
