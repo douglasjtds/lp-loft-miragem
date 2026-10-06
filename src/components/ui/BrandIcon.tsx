@@ -16,7 +16,7 @@ import { cn } from "@/lib/cn";
 
 type BrandIconProps = {
   name: BrandIconName;
-  /** Em px. Default 48 = mínimo da §5. Na seção Método são 120–160. */
+  /** Em px. Default 48 = mínimo da §5. Na Experiência são 120–160. */
   size?: number;
   className?: string;
   /**
@@ -26,7 +26,7 @@ type BrandIconProps = {
   animatable?: boolean;
   /**
    * Quando o ícone carrega significado sozinho. Sem título ele é decorativo
-   * (`aria-hidden`) — o normal, já que o nome do pilar está no heading ao lado.
+   * (`aria-hidden`) — o normal, já que o nome do momento está no heading ao lado.
    */
   title?: string;
 };
@@ -49,9 +49,9 @@ export function BrandIcon({
       className={cn("shrink-0", className)}
       fill="none"
       stroke="currentColor"
-      // 2 no viewBox de 96 = ~1px a 48px e ~2.5px a 120px. Acompanha o peso do
-      // traçado do manual e é o mesmo valor dos SVGs de public/brand/.
-      strokeWidth={2}
+      // 3 no viewBox de 96 = 1.5px a 48px e ~4px a 120px: a proporção do contorno da
+      // logo (8px em 272px). É o mesmo valor dos SVGs de public/brand/.
+      strokeWidth={3}
       strokeLinecap="round"
       strokeLinejoin="round"
       role={title ? "img" : undefined}

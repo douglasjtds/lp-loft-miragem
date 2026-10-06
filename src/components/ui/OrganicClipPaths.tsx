@@ -1,15 +1,21 @@
 /**
- * As quatro máscaras orgânicas — DESIGN-GUIDELINES.md §6.
+ * As quatro máscaras de onda — DESIGN-GUIDELINES.md §6.
  *
- * O manual usa formas irregulares e assimétricas nas amostras de cor. É esse DNA que
- * impede o layout de parecer template, e é por isso que foto NUNCA leva `border-radius`
- * nem círculo perfeito neste projeto.
+ * A linguagem é a ONDA da logo: as linhas d'água do emblema são senoides regulares, de
+ * amplitude baixa (no original, ~6px de amplitude para ~68px de período). Aqui ela vira a
+ * borda de UM ou DOIS lados da foto, nunca dos quatro, e os lados restantes ficam retos,
+ * com canto vivo. O contraste entre o reto (a cabana) e a onda (a água) é o desenho; é
+ * também o que impede qualquer uma delas de ler como `border-radius`.
  *
- * `clipPathUnits="objectBoundingBox"` mantém as coordenadas normalizadas em 0–1: a mesma
- * forma serve um retrato 4:5 e um corte 3:2 sem redesenhar path. Em compensação, a forma
- * "estica" junto com a caixa — por isso `a` e `b` nasceram pensadas em vertical (são as
- * duas que cobrem retrato de corpo inteiro, no herói e no Sobre) e têm a borda de cima
- * limpa: é onde está a cabeça.
+ * `clipPathUnits="objectBoundingBox"` mantém as coordenadas em 0–1: a mesma forma serve um
+ * retrato 4:5 e um corte 3:2. A amplitude é fração da caixa, então cresce com ela; os
+ * valores foram escolhidos para a proporção da logo (amplitude/período ≈ 0,09) num retrato.
+ *
+ * Os paths são senoides convertidas em cúbicas: cada meia onda vai de um extremo ao outro
+ * com alças horizontais de 0,3642 da meia onda (a aproximação clássica do cosseno). Alça
+ * horizontal no extremo = nenhum vértice na virada. Para mudar cristas ou amplitude,
+ * regere com a mesma fórmula; editar ponto a ponto quebra a regularidade, que é o traço
+ * da marca.
  *
  * Este bloco é montado UMA vez, no layout. Os componentes só referenciam por id.
  */
@@ -22,12 +28,12 @@ export function organicClip(shape: OrganicShape): string {
   return `url(#organic-${shape})`;
 }
 
-/** Descrição de cada forma — alimenta o styleguide e documenta a intenção de cada uma. */
+/** Descrição de cada forma: alimenta o styleguide e documenta a intenção de cada uma. */
 export const organicShapeNotes: Record<OrganicShape, string> = {
-  a: "Cheia no ombro direito, afunilando para a base à esquerda, com um trecho quase reto à direita. A mais contida — é a do herói (4:5), onde o rosto pede sobra de área.",
-  b: "Topo largo e contínuo, com duas elevações e um vale invertidos para a BASE. A mais gestual das quatro — é a do Sobre, onde o gesto precisa acontecer longe da cabeça.",
-  c: "Mordida côncava no flanco esquerdo — a única com curvatura invertida.",
-  d: "Cintura no flanco direito e um lobo avançando na base, como a onda de papel do manual.",
+  a: "Borda inferior em onda, cinco cristas. A do herói: a foto termina na água.",
+  b: "Borda superior em onda, três cristas longas. A da Experiência.",
+  c: "Lateral esquerda em onda vertical, cinco cristas. O loft e Localização.",
+  d: "Topo e base em ondas paralelas, amplitude mínima. Só a foto em destaque da galeria.",
 };
 
 export function OrganicClipPaths() {
@@ -40,67 +46,94 @@ export function OrganicClipPaths() {
       className="absolute h-0 w-0 overflow-hidden"
     >
       <defs>
-        {/* a — cheia no ombro direito, afunilando para a base à esquerda. Do lado
-            direito a curva quase endireita: é essa reta parcial que tira a forma do
-            registro de "retângulo arredondado". */}
+        {/* a · borda inferior, 5 cristas, meia-amplitude 0.016 da altura. Herói: a foto
+            "termina na água". Os dois cantos de baixo caem no ponto mais fundo da onda,
+            então encontram a lateral reta sem degrau. */}
         <clipPath id="organic-a" clipPathUnits="objectBoundingBox">
           <path
-            d="M0.46 0.00
-               C0.75 -0.01, 0.94 0.06, 0.97 0.22
-               C0.995 0.40, 0.93 0.58, 0.86 0.72
-               C0.80 0.90, 0.66 1.005, 0.44 1.00
-               C0.26 0.995, 0.13 0.94, 0.10 0.80
-               C0.07 0.68, 0.00 0.50, 0.05 0.34
-               C0.09 0.16, 0.24 0.03, 0.46 0.00 Z"
+            d="M0 0
+               H1
+               V1
+               C0.9636 1, 0.9364 0.968, 0.9 0.968
+               C0.8636 0.968, 0.8364 1, 0.8 1
+               C0.7636 1, 0.7364 0.968, 0.7 0.968
+               C0.6636 0.968, 0.6364 1, 0.6 1
+               C0.5636 1, 0.5364 0.968, 0.5 0.968
+               C0.4636 0.968, 0.4364 1, 0.4 1
+               C0.3636 1, 0.3364 0.968, 0.3 0.968
+               C0.2636 0.968, 0.2364 1, 0.2 1
+               C0.1636 1, 0.1364 0.968, 0.1 0.968
+               C0.0636 0.968, 0.0364 1, 0 1
+               Z"
           />
         </clipPath>
 
-        {/* b — as duas elevações e o vale das ondas de papel do manual, mas na BASE.
-            A borda de cima é um platô contínuo (y ≤ 0.02 entre x 0.38 e 0.98) porque
-            esta é a máscara do Sobre, um retrato de corpo inteiro em 4:5: ali em cima
-            está a cabeça de quem foi fotografado, e o `scale(1.12)` + `translateY(±3.5%)` do parallax
-            ainda sobem a foto ~4% dentro do quadro. Gesto na borda de cima aqui não é
-            estilo, é corte no cabelo. O gesto desceu para o vestido, onde não custa
-            nada. Os pontos extremos (topo, flanco direito, fundo dos lobos, fundo do
-            vale) têm alças horizontais/verticais: é o que impede vértice na virada. */}
+        {/* b · borda superior, 3 cristas (comprimento de onda 5/3 do das outras: as
+            "cristas longas"), meia-amplitude 0.024. Experiência. */}
         <clipPath id="organic-b" clipPathUnits="objectBoundingBox">
           <path
-            d="M0.55 0.008
-               C0.72 0.008, 0.98 0.20, 0.98 0.42
-               C0.98 0.66, 0.85 0.962, 0.66 0.962
-               C0.54 0.962, 0.46 0.885, 0.36 0.885
-               C0.28 0.885, 0.24 0.928, 0.17 0.928
-               C0.10 0.928, 0.05 0.70, 0.05 0.44
-               C0.05 0.22, 0.34 0.008, 0.55 0.008 Z"
+            d="M0 0
+               C0.0607 0, 0.106 0.048, 0.1667 0.048
+               C0.2274 0.048, 0.2726 0, 0.3333 0
+               C0.394 0, 0.4393 0.048, 0.5 0.048
+               C0.5607 0.048, 0.606 0, 0.6667 0
+               C0.7274 0, 0.7726 0.048, 0.8333 0.048
+               C0.894 0.048, 0.9393 0, 1 0
+               V1
+               H0
+               Z"
           />
         </clipPath>
 
-        {/* c — mordida côncava no flanco esquerdo. A única das quatro com curvatura
-            invertida; usar onde a forma precisa "abraçar" outro elemento. */}
+        {/* c · lateral esquerda, 5 cristas na vertical, meia-amplitude 0.022 da LARGURA.
+            O loft / Localização. A onda corre ao longo da foto, como a margem da represa. */}
         <clipPath id="organic-c" clipPathUnits="objectBoundingBox">
           <path
-            d="M0.50 0.02
-               C0.78 0.00, 0.95 0.10, 0.95 0.30
-               C0.96 0.52, 0.90 0.72, 0.80 0.85
-               C0.68 0.98, 0.52 1.00, 0.40 0.95
-               C0.28 0.90, 0.40 0.78, 0.30 0.62
-               C0.16 0.46, 0.03 0.48, 0.06 0.34
-               C0.09 0.18, 0.28 0.04, 0.50 0.02 Z"
+            d="M1 0
+               V1
+               H0
+               C0 0.9636, 0.044 0.9364, 0.044 0.9
+               C0.044 0.8636, 0 0.8364, 0 0.8
+               C0 0.7636, 0.044 0.7364, 0.044 0.7
+               C0.044 0.6636, 0 0.6364, 0 0.6
+               C0 0.5636, 0.044 0.5364, 0.044 0.5
+               C0.044 0.4636, 0 0.4364, 0 0.4
+               C0 0.3636, 0.044 0.3364, 0.044 0.3
+               C0.044 0.2636, 0 0.2364, 0 0.2
+               C0 0.1636, 0.044 0.1364, 0.044 0.1
+               C0.044 0.0636, 0 0.0364, 0 0
+               Z"
           />
         </clipPath>
 
-        {/* d — cintura no flanco direito e um lobo que avança na base, como a onda de
-            papel do manual. Traçado sem autointerseção: qualquer cruzamento abriria
-            um furo na foto pela regra de preenchimento. */}
+        {/* d · topo e base em onda PARALELA (mesma fase), 5 cristas, meia-amplitude 0.008.
+            Destaque da galeria. Paralelas como as linhas d’água do emblema: espelhadas,
+            a faixa estrangularia e viraria ampulheta. */}
         <clipPath id="organic-d" clipPathUnits="objectBoundingBox">
           <path
-            d="M0.20 0.12
-               C0.36 0.00, 0.62 0.00, 0.74 0.10
-               C0.88 0.20, 0.92 0.36, 0.88 0.50
-               C0.84 0.64, 0.99 0.72, 0.96 0.84
-               C0.93 0.95, 0.72 1.00, 0.50 0.98
-               C0.28 0.96, 0.06 0.90, 0.04 0.70
-               C0.02 0.48, 0.06 0.24, 0.20 0.12 Z"
+            d="M0 0
+               C0.0364 0, 0.0636 0.016, 0.1 0.016
+               C0.1364 0.016, 0.1636 0, 0.2 0
+               C0.2364 0, 0.2636 0.016, 0.3 0.016
+               C0.3364 0.016, 0.3636 0, 0.4 0
+               C0.4364 0, 0.4636 0.016, 0.5 0.016
+               C0.5364 0.016, 0.5636 0, 0.6 0
+               C0.6364 0, 0.6636 0.016, 0.7 0.016
+               C0.7364 0.016, 0.7636 0, 0.8 0
+               C0.8364 0, 0.8636 0.016, 0.9 0.016
+               C0.9364 0.016, 0.9636 0, 1 0
+               V0.984
+               C0.9636 0.984, 0.9364 1, 0.9 1
+               C0.8636 1, 0.8364 0.984, 0.8 0.984
+               C0.7636 0.984, 0.7364 1, 0.7 1
+               C0.6636 1, 0.6364 0.984, 0.6 0.984
+               C0.5636 0.984, 0.5364 1, 0.5 1
+               C0.4636 1, 0.4364 0.984, 0.4 0.984
+               C0.3636 0.984, 0.3364 1, 0.3 1
+               C0.2636 1, 0.2364 0.984, 0.2 0.984
+               C0.1636 0.984, 0.1364 1, 0.1 1
+               C0.0636 1, 0.0364 0.984, 0 0.984
+               Z"
           />
         </clipPath>
       </defs>

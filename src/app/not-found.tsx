@@ -25,11 +25,12 @@ export default function NotFound() {
   return (
     <main className="bg-papel flex min-h-svh flex-col items-center justify-center px-6 py-24 text-center">
       <Image
-        src="/brand/monograma.png"
+        src="/brand/monograma.svg"
         alt={header.monogramaAlt}
-        width={114}
-        height={128}
-        className="h-14 w-auto"
+        width={56}
+        height={56}
+        unoptimized
+        className="h-14 w-14"
       />
 
       <Eyebrow className="text-tinta-suave mt-10">404</Eyebrow>

@@ -245,7 +245,7 @@ export const metodo = {
 
   pilares: [
     {
-      icone: "pilar-um" satisfies BrandIconName,
+      icone: "sol-nascente" satisfies BrandIconName,
       titulo: "<<A CONFIRMAR: nome do primeiro pilar>>",
       subtitulo: "<<A CONFIRMAR: uma linha dizendo o que este pilar cuida>>",
       texto: "<<A CONFIRMAR: o que acontece na prática dentro deste pilar>>",
@@ -259,7 +259,7 @@ export const metodo = {
       } satisfies Foto,
     },
     {
-      icone: "pilar-dois" satisfies BrandIconName,
+      icone: "prancha" satisfies BrandIconName,
       titulo: "<<A CONFIRMAR: nome do segundo pilar>>",
       subtitulo: "<<A CONFIRMAR: uma linha>>",
       texto: "<<A CONFIRMAR: o que acontece na prática>>",
@@ -267,7 +267,7 @@ export const metodo = {
       foto: null,
     },
     {
-      icone: "pilar-tres" satisfies BrandIconName,
+      icone: "lua-agua" satisfies BrandIconName,
       titulo: "<<A CONFIRMAR: nome do terceiro pilar>>",
       subtitulo: "<<A CONFIRMAR: uma linha>>",
       texto: "<<A CONFIRMAR: o que acontece na prática>>",

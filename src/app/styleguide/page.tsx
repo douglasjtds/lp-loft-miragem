@@ -5,9 +5,9 @@ import { Button, type ButtonVariant } from "@/components/ui/Button";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import {
   ORGANIC_SHAPES,
+  organicClip,
   organicShapeNotes,
 } from "@/components/ui/OrganicClipPaths";
-import { OrganicImage } from "@/components/ui/OrganicImage";
 import { Section, type SectionBackground } from "@/components/ui/Section";
 import { WhatsappCta } from "@/components/ui/WhatsappCta";
 import { BRAND_ICON_NAMES } from "@/config/brand-icons";
@@ -36,6 +36,14 @@ export const metadata: Metadata = {
 };
 
 const token = (name: ColorToken) => `var(--color-${name})`;
+
+/** Uma cor por máscara no styleguide, para as quatro lerem como peças diferentes. */
+const amostrasDeMascara = [
+  "bg-ancora",
+  "bg-decor",
+  "bg-acento",
+  "bg-superficie-2",
+];
 
 /** Classes escritas por extenso: o scanner do Tailwind não resolve nome montado em runtime. */
 const amostraDeFonte: Record<keyof typeof fonts, string> = {
@@ -503,19 +511,16 @@ export default function Styleguide() {
       <section className="container-lp mb-16" aria-labelledby="c-organic">
         <Titulo
           id="c-organic"
-          nota="Agora sobre a foto real (Fase 3). As quatro precisam ser assimétricas, sem vértice agudo e distinguíveis de longe, e nenhuma pode parecer border-radius. A shape a é a do herói."
+          nota="A onda da logo vira borda de um ou dois lados; os outros ficam retos, com canto vivo. Sobre cor chapada até a Fase 3 trazer as fotos: a forma se julga melhor sem a foto distraindo. Nenhuma pode parecer border-radius."
         >
-          OrganicImage, as 4 máscaras
+          As 4 máscaras de onda
         </Titulo>
         <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {ORGANIC_SHAPES.map((shape) => (
+          {ORGANIC_SHAPES.map((shape, i) => (
             <li key={shape}>
-              <OrganicImage
-                src="/images/retrato-hero.jpg"
-                alt=""
-                shape={shape}
-                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                className="aspect-[4/5] w-full"
+              <div
+                className={`${amostrasDeMascara[i]} aspect-[4/5] w-full`}
+                style={{ clipPath: organicClip(shape) }}
               />
               <Eyebrow className="text-acento-texto mt-3">
                 shape=&quot;{shape}&quot;
@@ -527,101 +532,119 @@ export default function Styleguide() {
           ))}
         </ul>
         <p className="eyebrow text-acento-texto mt-8 mb-3">
-          As mesmas quatro em 3:2, sobre a foto do Sobre
+          As mesmas quatro em 3:2
         </p>
         <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {ORGANIC_SHAPES.map((shape) => (
+          {ORGANIC_SHAPES.map((shape, i) => (
             <li key={shape}>
-              <OrganicImage
-                src="/images/retrato-sobre.jpg"
-                alt=""
-                shape={shape}
-                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                className="aspect-[3/2] w-full"
+              <div
+                className={`${amostrasDeMascara[i]} aspect-[3/2] w-full`}
+                style={{ clipPath: organicClip(shape) }}
               />
             </li>
           ))}
         </ul>
-      </section>
-
-      <section className="container-lp mb-16" aria-labelledby="c-assets">
-        <Titulo
-          id="c-assets"
-          nota="O ensaio inteiro sai de scripts/processar-fotos.mjs. Fotos de ensaios diferentes precisam de tratamento cromático unificado (dessaturação em direção à cor decorativa da paleta) para lerem como um conjunto só, sem isso cada seção parece de um site diferente."
-        >
-          Assets
-        </Titulo>
-        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            ["retrato-hero.jpg", "Herói · 1200w · LCP"],
-            ["retrato-sobre.jpg", "Sobre · 1100w"],
-            ["pilar-um.jpg", "Método/pilar 1 · 1100w"],
-            ["pilar-tres.jpg", "Método/pilar 3 · 1100w"],
-            ["atendimento.jpg", "Como Funciona · 900w"],
-          ].map(([arquivo, nota]) => (
-            <li key={arquivo}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={`/images/${arquivo}`}
-                alt=""
-                className="w-full"
-                loading="lazy"
-              />
-              <Eyebrow className="text-acento-texto mt-2">{arquivo}</Eyebrow>
-              <p className="caption text-tinta-suave">{nota}</p>
-            </li>
-          ))}
-        </ul>
-        <div className="mt-10 flex flex-wrap items-center gap-8">
-          <div className="bg-papel p-6">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/brand/monograma.png"
-              alt="Monograma BM"
-              className="h-16 w-auto"
-            />
-          </div>
-          <div className="bg-ancora p-6">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/brand/monograma-claro.png"
-              alt=""
-              className="h-16 w-auto"
-            />
-          </div>
-          <p className="caption medida text-tinta-suave">
-            O monograma é PNG, não SVG: o manual só entregou raster e redesenhar
-            a ligadura à mão a descaracterizaria. Ele não é animado (só os três
-            ícones são), então raster aqui não custa nada.
+        <p className="eyebrow text-acento-texto mt-8 mb-3">
+          Grafismo de fundo: onda em decor a 10%
+        </p>
+        <div className="bg-papel text-decor relative flex h-40 items-center overflow-hidden">
+          <BrandIcon
+            name="onda"
+            size={480}
+            className="absolute -left-10 opacity-10"
+          />
+          <p className="body medida text-tinta relative ml-auto max-w-xs pr-6">
+            Atrás do texto, aria-hidden, nunca competindo com ele.
           </p>
         </div>
+      </section>
+
+      <section className="container-lp mb-16" aria-labelledby="c-monograma">
+        <Titulo
+          id="c-monograma"
+          nota="O emblema da logo redesenhado em SVG a partir das medidas do PNG: sol r51, seis linhas d'água a cada 21px, período 68. O original é 4% mais largo que alto (a logo foi esticada); aqui o círculo é círculo. O azul da logo vive só aqui dentro, nunca como token."
+        >
+          Monograma
+        </Titulo>
+        <div className="flex flex-wrap items-end gap-6">
+          <div className="bg-papel flex items-end gap-6 p-6">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/monograma.svg"
+              alt="Monograma do Loft Miragem"
+              width={160}
+              height={160}
+            />
+            <div className="flex items-center gap-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/brand/monograma.svg" alt="" width={36} height={36} />
+              <span className="text-ancora font-sans text-lg font-semibold whitespace-nowrap">
+                Loft Miragem
+              </span>
+            </div>
+          </div>
+          <div className="bg-ancora flex items-end gap-6 p-6">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/monograma-claro.svg"
+              alt="Monograma do Loft Miragem, versão clara"
+              width={160}
+              height={160}
+            />
+            <div className="flex items-center gap-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/brand/monograma-claro.svg"
+                alt=""
+                width={36}
+                height={36}
+              />
+              <span className="text-papel font-sans text-lg font-semibold whitespace-nowrap">
+                Loft Miragem
+              </span>
+            </div>
+          </div>
+        </div>
+        <p className="caption medida text-tinta-suave mt-4">
+          36px é o lockup do header (§5): monograma e nome em Nunito Sans 600, o
+          horizontal que a logo empilhada não oferece.
+        </p>
       </section>
 
       <section className="container-lp mb-16" aria-labelledby="c-brandicon">
         <Titulo
           id="c-brandicon"
-          nota="⚠️ Traçados PROVISÓRIOS: a Fase 3 substitui os paths pelos ícones reais do manual. O que se valida aqui é a API e o traçado aberto em stroke, requisito da animação de desenho da Fase 7. Cor por herança."
+          nota="Derivados do emblema: stroke arredondado no peso do contorno da logo, um path por gesto, viewBox 96. Manhã, tarde e noite são a coreografia da Experiência (Fase 7); a onda é grafismo de transição. Cor por herança."
         >
-          BrandIcon · corpo, mente, alma
+          BrandIcon · manhã, tarde, noite, onda
         </Titulo>
         <div className="text-ancora flex flex-wrap items-end gap-10">
           {BRAND_ICON_NAMES.map((name) => (
             <div key={name}>
-              <BrandIcon name={name} size={120} animatable />
+              <BrandIcon name={name} size={160} animatable />
               <Eyebrow className="text-acento-texto mt-3">{name}</Eyebrow>
             </div>
+          ))}
+        </div>
+        <div className="text-ancora mt-8 flex flex-wrap items-end gap-10">
+          {BRAND_ICON_NAMES.map((name) => (
+            <BrandIcon key={name} name={name} size={120} />
           ))}
         </div>
         <div className="bg-ancora text-superficie-2 mt-8 flex flex-wrap items-center gap-10 p-6">
           {BRAND_ICON_NAMES.map((name) => (
             <BrandIcon key={name} name={name} size={48} title={name} />
           ))}
+          <span className="text-decor flex gap-10">
+            {BRAND_ICON_NAMES.map((name) => (
+              <BrandIcon key={name} name={name} size={48} />
+            ))}
+          </span>
           <p className="caption">
-            48px é o mínimo da §5, abaixo disso o traço de 1.5px desaparece.
+            48px é o mínimo da §5: o traço fica em 1,5px.
           </p>
         </div>
       </section>
-
       <section className="container-lp mb-16" aria-labelledby="c-whatsapp">
         <Titulo
           id="c-whatsapp"
