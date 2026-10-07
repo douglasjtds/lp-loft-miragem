@@ -310,15 +310,23 @@ export const experiencia: {
  * O componente aceita de 4 a 12 itens sem mudar código: foto nova = item novo aqui +
  * linha no `scripts/processar-fotos.mjs`. O primeiro item é o destaque (máscara `d`).
  */
+export type GaleriaFoto = {
+  tipo: "foto";
+  src: string;
+  /** Versão do lightbox, carregada só ao abrir. */
+  srcGrande: string;
+  /**
+   * Dimensões reais de `srcGrande`, em px. O lightbox renderiza no tamanho intrínseco:
+   * sem CLS e sem esticar foto pequena (as pranchas têm só 640px, §9).
+   */
+  largura: number;
+  altura: number;
+  alt: string;
+  legenda: Texto;
+};
+
 export type GaleriaItem =
-  | {
-      tipo: "foto";
-      src: string;
-      /** Versão do lightbox, carregada só ao abrir. */
-      srcGrande: string;
-      alt: string;
-      legenda: Texto;
-    }
+  | GaleriaFoto
   | {
       tipo: "video";
       src: string;
@@ -350,6 +358,8 @@ export const galeria: {
       tipo: "foto",
       src: "/images/hero-por-do-sol.jpg",
       srcGrande: "/images/hero-por-do-sol-grande.jpg",
+      largura: 1440,
+      altura: 1920,
       alt: "O sol se pondo sobre a represa de Três Marias, visto do mezanino do loft através da rede de corda, com a piscina-praia embaixo.",
       legenda: "O pôr do sol visto do mezanino",
     },
@@ -358,6 +368,8 @@ export const galeria: {
       src: "/images/galeria-pranchas.jpg",
       /* Original de 640px: sem versão grande e sem upscale (§9). */
       srcGrande: "/images/galeria-pranchas.jpg",
+      largura: 640,
+      altura: 853,
       alt: "Duas pranchas de stand-up paddle com a logo do Loft Miragem na represa ao pôr do sol, vistas de quem está sentado nelas.",
       legenda: "As pranchas na represa, no fim da tarde",
     },
@@ -365,6 +377,8 @@ export const galeria: {
       tipo: "foto",
       src: "/images/manha-cafe.jpg",
       srcGrande: "/images/manha-cafe-grande.jpg",
+      largura: 1440,
+      altura: 1920,
       alt: "Bandeja de café da manhã flutuando na piscina-praia, com a cabana preta do loft e o céu azul ao fundo.",
       legenda: "Café na piscina-praia",
     },
@@ -374,6 +388,8 @@ export const galeria: {
       tipo: "foto",
       src: "/images/tarde-sup.jpg",
       srcGrande: "/images/tarde-sup-grande.jpg",
+      largura: 1600,
+      altura: 2133,
       alt: "Mulher segurando a prancha de stand-up paddle com a logo do Loft Miragem na margem da represa.",
       legenda: "SUP na margem da represa",
     },
@@ -381,6 +397,8 @@ export const galeria: {
       tipo: "foto",
       src: "/images/noite-piscina.jpg",
       srcGrande: "/images/noite-piscina-grande.jpg",
+      largura: 1440,
+      altura: 1800,
       alt: "Piscina iluminada em azul à noite, com o interior do loft aceso visto pela vidraça.",
       legenda: "A piscina acesa à noite",
     },
