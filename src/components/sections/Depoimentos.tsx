@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 
+import { Reveal } from "@/components/motion/Reveal";
 import { LinkExterno } from "@/components/ui/LinkExterno";
 import { Pendencia } from "@/components/ui/Pendencia";
 import { Section } from "@/components/ui/Section";
@@ -33,14 +34,16 @@ export function Depoimentos() {
       background="superficie"
       aria-labelledby="avaliacoes-titulo"
     >
-      <h2 id="avaliacoes-titulo" className="display-lg medida text-ancora">
-        {avaliacoes.titulo}
-      </h2>
-      <p className="font-ui text-ancora mt-4 font-semibold">
-        <Pendencia>{avaliacoes.resumo}</Pendencia>
-      </p>
+      <Reveal>
+        <h2 id="avaliacoes-titulo" className="display-lg medida text-ancora">
+          {avaliacoes.titulo}
+        </h2>
+        <p className="font-ui text-ancora mt-4 font-semibold">
+          <Pendencia>{avaliacoes.resumo}</Pendencia>
+        </p>
+      </Reveal>
 
-      <div className="mt-12 gap-x-16 md:mt-16 md:columns-2">
+      <Reveal atraso={120} className="mt-12 gap-x-16 md:mt-16 md:columns-2">
         {avaliacoes.itens.map((avaliacao) => (
           <figure
             key={`${avaliacao.fonte}-${avaliacao.nome}`}
@@ -55,7 +58,7 @@ export function Depoimentos() {
             </figcaption>
           </figure>
         ))}
-      </div>
+      </Reveal>
 
       {/* Links de fonte: quem quiser conferir vai direto à origem. Link sem destino
           confirmado (`href: null`) não renderiza, e o "ou" só aparece entre dois. */}

@@ -1,3 +1,5 @@
+import { LinhaDoDia } from "@/components/motion/LinhaDoDia";
+import { Reveal } from "@/components/motion/Reveal";
 import { BrandIcon } from "@/components/ui/BrandIcon";
 import { OrganicImage } from "@/components/ui/OrganicImage";
 import { Pendencia } from "@/components/ui/Pendencia";
@@ -23,10 +25,11 @@ import { ondaPath } from "@/lib/onda";
  * por `subgrid`, e é isso que alinha os três ícones na mesma altura da onda sem número
  * mágico de posição. O texto fica sempre encostado na linha; a foto, longe dela.
  *
- * Fase 7 (a única animação coreografada da página, §8): a onda se desenha e cada ícone
- * se desenha ao chegar na sua parada. Os ganchos já estão aqui: `data-linha-do-dia`
- * nas duas ondas, `data-momento` em cada parada e `animatable` nos ícones. Até lá, e
- * sob reduced-motion para sempre, tudo nasce desenhado e visível.
+ * A única animação coreografada da página (§8) é a `LinhaDoDia`: a onda se desenha e
+ * cada ícone se desenha quando a caneta chega na sua parada. Ela se
+ * acha pelos ganchos daqui: `data-linha-do-dia` nas duas ondas, `data-momento` em cada
+ * parada e `animatable` nos ícones. Texto e foto de cada parada entram pelo `Reveal`,
+ * no tempo deles. Sem JS e sob reduced-motion, tudo nasce desenhado e visível.
  */
 
 /*
@@ -88,7 +91,7 @@ function Parada({ momento, indice }: { momento: Momento; indice: number }) {
         </div>
       </div>
 
-      <div
+      <Reveal
         className={cn(
           "flex flex-col gap-6",
           acimaDaLinha
@@ -124,7 +127,7 @@ function Parada({ momento, indice }: { momento: Momento; indice: number }) {
             )}
           />
         )}
-      </div>
+      </Reveal>
     </li>
   );
 }
@@ -175,6 +178,8 @@ export function Experiencia() {
           ))}
         </ol>
       </div>
+
+      <LinhaDoDia rootId={experiencia.id} />
     </Section>
   );
 }

@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/motion/Reveal";
 import { LinkExterno } from "@/components/ui/LinkExterno";
 import { Pendencia } from "@/components/ui/Pendencia";
 import { Section } from "@/components/ui/Section";
@@ -49,7 +50,7 @@ export function Localizacao() {
       aria-labelledby="localizacao-titulo"
     >
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center lg:gap-12">
-        <div className="min-w-0 wrap-break-word lg:col-span-7">
+        <Reveal className="min-w-0 wrap-break-word lg:col-span-7">
           <h2 id="localizacao-titulo" className="display-lg medida text-ancora">
             {localizacao.titulo}
           </h2>
@@ -78,7 +79,7 @@ export function Localizacao() {
               </p>
             )}
           </div>
-        </div>
+        </Reveal>
 
         <svg
           aria-hidden="true"

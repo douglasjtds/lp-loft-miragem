@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/motion/Reveal";
 import { Pendencia } from "@/components/ui/Pendencia";
 import { Section } from "@/components/ui/Section";
 import { WhatsappCta } from "@/components/ui/WhatsappCta";
@@ -27,7 +28,7 @@ export function OLoft() {
   return (
     <Section id={oLoft.id} background="creme" aria-labelledby="o-loft-titulo">
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-        <div className="lg:col-span-5">
+        <Reveal className="lg:col-span-5">
           <h2 id="o-loft-titulo" className="display-lg text-ancora">
             {oLoft.titulo}
           </h2>
@@ -45,24 +46,26 @@ export function OLoft() {
           >
             {oLoft.cta.label}
           </WhatsappCta>
-        </div>
+        </Reveal>
 
-        <ul className="body text-tinta gap-x-10 sm:columns-2 lg:col-span-7 lg:pt-3">
-          {itens.map((item) => (
-            <li
-              key={item}
-              className="border-ancora/10 flex break-inside-avoid gap-3 border-t py-3"
-            >
-              <span
-                aria-hidden="true"
-                className="bg-acento mt-[0.8em] h-0.5 w-3 shrink-0"
-              />
-              <span className="min-w-0 text-pretty">
-                <Pendencia>{item}</Pendencia>
-              </span>
-            </li>
-          ))}
-        </ul>
+        <Reveal atraso={120} className="lg:col-span-7 lg:pt-3">
+          <ul className="body text-tinta gap-x-10 sm:columns-2">
+            {itens.map((item) => (
+              <li
+                key={item}
+                className="border-ancora/10 flex break-inside-avoid gap-3 border-t py-3"
+              >
+                <span
+                  aria-hidden="true"
+                  className="bg-acento mt-[0.8em] h-0.5 w-3 shrink-0"
+                />
+                <span className="min-w-0 text-pretty">
+                  <Pendencia>{item}</Pendencia>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
       </div>
     </Section>
   );

@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/motion/Reveal";
 import { Pendencia } from "@/components/ui/Pendencia";
 import { Section } from "@/components/ui/Section";
 import { provaRapida, type ProvaItem } from "@/config/content";
@@ -42,28 +43,30 @@ export function ProvaRapida() {
 
   return (
     <Section background="creme" spacing="faixa">
-      <ul className="grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-4 md:gap-x-0">
-        {provaRapida.itens.map((item) => (
-          <li
-            key={item.destaque}
-            className="md:border-ancora/15 md:border-l md:px-6 md:first:border-l-0 md:first:pl-0"
-          >
-            {item.href ? (
-              <a
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={item.ariaLabel}
-                className="block min-h-11 [&:hover_span]:decoration-2"
-              >
-                <Conteudo item={item} comLink />
-              </a>
-            ) : (
-              <Conteudo item={item} comLink={false} />
-            )}
-          </li>
-        ))}
-      </ul>
+      <Reveal>
+        <ul className="grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-4 md:gap-x-0">
+          {provaRapida.itens.map((item) => (
+            <li
+              key={item.destaque}
+              className="md:border-ancora/15 md:border-l md:px-6 md:first:border-l-0 md:first:pl-0"
+            >
+              {item.href ? (
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={item.ariaLabel}
+                  className="block min-h-11 [&:hover_span]:decoration-2"
+                >
+                  <Conteudo item={item} comLink />
+                </a>
+              ) : (
+                <Conteudo item={item} comLink={false} />
+              )}
+            </li>
+          ))}
+        </ul>
+      </Reveal>
     </Section>
   );
 }

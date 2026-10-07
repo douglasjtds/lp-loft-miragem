@@ -1,3 +1,4 @@
+import { HeroTimeline } from "@/components/motion/HeroTimeline";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { LinkExterno } from "@/components/ui/LinkExterno";
 import { OrganicImage } from "@/components/ui/OrganicImage";
@@ -23,8 +24,10 @@ import { hero } from "@/config/content";
  *
  * Regras estruturais:
  * 1. **NADA aqui começa invisível.** Nenhum `opacity-0` no HTML: o LCP não pode
- *    depender de JS. Os `data-anim` são endereços para a timeline da Fase 7; até lá,
- *    e sob `reduced-motion` para sempre, são inertes.
+ *    depender de JS. Os `data-anim` são endereços para a `HeroTimeline`, que escreve
+ *    o estado inicial depois da hidratação; sob `reduced-motion` são inertes.
+ *    A foto não entra na timeline: o único movimento dela é o parallax de scroll em
+ *    CSS, atrás de `@supports` (`parallax` na OrganicImage).
  * 2. **Um h1 só na página inteira**, e é este.
  * 3. **Um botão só.** O Airbnb é link de texto embaixo dele, nunca segundo botão (§10).
  *
@@ -46,11 +49,11 @@ export function Hero() {
             muda. */}
         <div className="relative lg:col-start-2 lg:row-start-1">
           <OrganicImage
-            data-anim="foto"
             src={hero.foto.src}
             alt={hero.foto.alt}
             shape={hero.foto.shape}
             priority
+            parallax
             sizes="(min-width: 1024px) 42vw, (min-width: 768px) 90vw, 100vw"
             className="h-[clamp(13rem,32svh,20rem)] w-full sm:h-[clamp(16rem,40svh,26rem)] lg:aspect-[4/5] lg:h-auto"
             objectPosition={hero.foto.objectPosition}
@@ -99,6 +102,8 @@ export function Hero() {
           </p>
         </div>
       </div>
+
+      <HeroTimeline rootId={hero.id} />
     </Section>
   );
 }

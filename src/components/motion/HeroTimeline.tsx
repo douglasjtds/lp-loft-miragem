@@ -6,10 +6,14 @@ import { carregarAnime } from "@/components/motion/anime";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 /**
- * Entrada da dobra — DESIGN-GUIDELINES.md §8 (`createTimeline`).
+ * Entrada da dobra — DESIGN-GUIDELINES.md §8.
  *
  * Não renderiza nada: acha os alvos pelos `data-anim` que o Hero já marca e some.
  * Tudo o que ele faz é reversível, e nada do que ele faz existe no HTML.
+ *
+ * Só o texto entra: eyebrow, h1 linha por linha, subtítulo, CTA e a linha de prova. A
+ * foto do herói NÃO anima de entrada (TODOs, Fase 7): é a candidata a LCP, e o único
+ * movimento dela é o parallax de scroll em CSS (`globals.css`).
  *
  * **A regra que manda aqui é a nº 3 da §8: a animação nunca bloqueia o LCP.** Título e
  * foto pintam primeiro, com opacidade cheia; o estado inicial (opacity 0, translateY) é
@@ -53,93 +57,78 @@ export function HeroTimeline({ rootId }: HeroTimelineProps) {
     let cancelado = false;
     let escopo: { revert: () => void } | null = null;
 
-    carregarAnime().then(
-      ({ createScope, createTimeline, stagger, definir }) => {
-        // Segunda checagem, agora com o custo real do import na conta: entre o começo
-        // do efeito e a chegada do chunk pode ter passado muito tempo, ou o visitante
-        // pode já ter rolado a página.
-        if (cancelado) return;
-        if (window.scrollY > LIMITE_DE_SCROLL_PX) return;
-        if (performance.now() > LIMITE_DE_ATRASO_MS) return;
+    carregarAnime().then(({ createScope, animate, stagger, definir }) => {
+      // Segunda checagem, agora com o custo real do import na conta: entre o começo
+      // do efeito e a chegada do chunk pode ter passado muito tempo, ou o visitante
+      // pode já ter rolado a página.
+      if (cancelado) return;
+      if (window.scrollY > LIMITE_DE_SCROLL_PX) return;
+      if (performance.now() > LIMITE_DE_ATRASO_MS) return;
 
-        const alvo = (nome: string) =>
-          raiz.querySelector<HTMLElement>(`[data-anim="${nome}"]`);
+      const alvo = (nome: string) =>
+        raiz.querySelector<HTMLElement>(`[data-anim="${nome}"]`);
 
-        const linhas = Array.from(
-          raiz.querySelectorAll<HTMLElement>("[data-hero-linha]"),
-        );
-        const eyebrow = alvo("eyebrow");
-        const subtitulo = alvo("subtitulo");
-        const cta = alvo("cta");
-        const disponibilidade = alvo("disponibilidade");
-        const foto = alvo("foto");
+      const linhas = Array.from(
+        raiz.querySelectorAll<HTMLElement>("[data-hero-linha]"),
+      );
+      const eyebrow = alvo("eyebrow");
+      const subtitulo = alvo("subtitulo");
+      const cta = alvo("cta");
+      const disponibilidade = alvo("disponibilidade");
 
-        // O monograma vive no header, fora da raiz — é o único alvo de fora, e é
-        // buscado por atributo justamente para não acoplar a timeline ao Header.
-        const monograma = document.querySelector<HTMLElement>(
-          "[data-anim-monograma]",
-        );
+      if (!linhas.length) return;
 
-        if (!linhas.length) return;
+      const texto = [
+        eyebrow,
+        ...linhas,
+        subtitulo,
+        cta,
+        disponibilidade,
+      ].filter((el): el is HTMLElement => el !== null);
 
-        const texto = [
-          eyebrow,
-          ...linhas,
-          subtitulo,
-          cta,
-          disponibilidade,
-        ].filter((el): el is HTMLElement => el !== null);
+      // A sequência é fixa e curta, então é escrita como horários absolutos e não
+      // como `createTimeline`: o módulo de timeline custava o que faltava para o
+      // chunk de animação caber nos 15KB gzip da §8. A leitura é a mesma: cada bloco
+      // começa antes de o anterior terminar, e o texto sobe como uma frase só.
+      const fimDasLinhas = 100 + 80 * (linhas.length - 1) + 600;
+      const sequencia: [HTMLElement | HTMLElement[] | null, number, number][] =
+        [
+          [eyebrow, 0, 500],
+          [linhas, 100, 600],
+          [subtitulo, fimDasLinhas - 280, 600],
+          [cta, fimDasLinhas + 120, 600],
+          [disponibilidade, fimDasLinhas + 300, 500],
+        ];
 
-        escopo = createScope({ root: raiz }).add(() => {
-          // ---- Estado inicial, aplicado AGORA e só agora (regra nº 3 da §8) ----
-          definir(texto, { opacity: 0, y: 16 });
-          if (monograma) definir(monograma, { opacity: 0, scale: 0.92 });
-          // A foto nunca fica invisível: ela é a candidata mais provável a LCP e só
-          // encolhe de 1.03 para 1. Um leve zoom-out, não uma aparição.
-          if (foto) definir(foto, { scale: 1.03 });
+      // Terminada a entrada, o escopo é revertido: o resultado na tela é o mesmo, mas
+      // sem o `opacity` e o `transform` inline que sobrariam em cinco nós (o transform
+      // abriria um contexto de empilhamento no CTA à toa).
+      let restantes = sequencia.filter(([alvos]) => alvos).length;
+      const concluir = () => {
+        restantes--;
+        if (restantes === 0) escopo?.revert();
+      };
 
-          const tl = createTimeline({
-            defaults: { duration: 600, ease: "out(3)" },
+      escopo = createScope({ root: raiz }).add(() => {
+        // ---- Estado inicial, aplicado AGORA e só agora (regra nº 3 da §8) ----
+        definir(texto, { opacity: 0, y: 16 });
+
+        sequencia.forEach(([alvos, inicio, duracao]) => {
+          if (!alvos) return;
+          animate(alvos, {
+            onComplete: concluir,
+            opacity: 1,
+            y: 0,
+            duration: duracao,
+            ease: "out(3)",
+            // As linhas do h1 sobem em stagger de 80ms; o resto entra inteiro.
+            delay: Array.isArray(alvos)
+              ? stagger(80, { start: inicio })
+              : inicio,
           });
-
-          if (monograma) {
-            tl.add(monograma, { opacity: 1, scale: 1 }, 0);
-          }
-
-          if (eyebrow) {
-            tl.add(eyebrow, { opacity: 1, y: 0, duration: 500 }, 220);
-          }
-
-          tl.add(
-            linhas,
-            { opacity: 1, y: 0, duration: 700, delay: stagger(80) },
-            340,
-          );
-
-          if (subtitulo) {
-            tl.add(subtitulo, { opacity: 1, y: 0 }, "-=280");
-          }
-
-          if (cta) {
-            tl.add(cta, { opacity: 1, y: 0 }, "-=200");
-          }
-
-          if (disponibilidade) {
-            tl.add(
-              disponibilidade,
-              { opacity: 1, y: 0, duration: 500 },
-              "-=420",
-            );
-          }
-
-          // A foto entra em paralelo com o título, não depois: ela já está visível, e
-          // esperar a vez faria a coluna direita parecer congelada por meio segundo.
-          if (foto) {
-            tl.add(foto, { scale: 1, duration: 900, ease: "outExpo" }, 240);
-          }
         });
-      },
-    );
+      });
+    });
 
     return () => {
       cancelado = true;

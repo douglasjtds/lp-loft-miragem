@@ -66,8 +66,6 @@ export function Header() {
             className="text-ancora flex min-h-11 shrink-0 items-center gap-2"
           >
             <Image
-              /* Alvo da timeline da dobra (Fase 7). Marcador inerte até lá. */
-              data-anim-monograma
               src="/brand/monograma.svg"
               alt=""
               width={36}

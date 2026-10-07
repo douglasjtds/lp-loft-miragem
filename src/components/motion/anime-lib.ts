@@ -1,7 +1,6 @@
 import { animate } from "animejs/animation";
 import { createScope } from "animejs/scope";
 import { createDrawable } from "animejs/svg";
-import { createTimeline } from "animejs/timeline";
 import { set, stagger } from "animejs/utils";
 
 /**
@@ -18,15 +17,18 @@ import { set, stagger } from "animejs/utils";
  * Importar por subpath ainda importa (§8): `animejs` na raiz arrastaria draggable, waapi,
  * text, motion path e os adapters, que a página não usa.
  *
+ * `animejs/timeline` também ficou de fora: a única sequência da página (a entrada do
+ * herói) é fixa e cabe em `animate` com `delay`, e a linha do dia é uma fila disparada
+ * por scroll, não uma timeline. Com ela o chunk passava dos 15KB por ~65 bytes.
+ *
  * `animejs/events` (o `onScroll`) também ficou de fora, e essa é a única razão de o chunk
  * caber no orçamento de 15KB gzip da §8: o ScrollObserver sozinho custava ~5KB gzip para
  * fazer o que o IntersectionObserver do navegador já faz de graça — e que o `Reveal` desta
- * mesma pasta já faz. Ver `DrawIcons.tsx`.
+ * mesma pasta já faz. Ver `LinhaDoDia.tsx`.
  */
 
 export const anime = {
   animate,
-  createTimeline,
   createScope,
   createDrawable,
   stagger,

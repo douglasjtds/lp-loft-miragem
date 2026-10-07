@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/motion/Reveal";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { LinkExterno } from "@/components/ui/LinkExterno";
 import { OrganicImage } from "@/components/ui/OrganicImage";
@@ -37,7 +38,7 @@ export function ComoFunciona() {
     >
       {/* 7/5 e não 6/6: metade-metade é o visual de template que a §7 rejeita. */}
       <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:items-center md:gap-12">
-        <div className="md:col-span-7">
+        <Reveal className="md:col-span-7">
           <Eyebrow className="text-acento-texto">
             {comoReservar.eyebrow}
           </Eyebrow>
@@ -52,7 +53,7 @@ export function ComoFunciona() {
           <p className="body-lg medida text-tinta mt-6 text-pretty">
             <Pendencia>{comoReservar.intro}</Pendencia>
           </p>
-        </div>
+        </Reveal>
 
         {comoReservar.foto && (
           <OrganicImage
@@ -66,31 +67,33 @@ export function ComoFunciona() {
         )}
       </div>
 
-      <ol className="mt-12 md:mt-16">
-        {comoReservar.etapas.map((etapa) => (
-          <li
-            key={etapa.numero}
-            /* O filete fecha embaixo no último item: a sequência precisa ter fim
+      <Reveal className="mt-12 md:mt-16">
+        <ol>
+          {comoReservar.etapas.map((etapa) => (
+            <li
+              key={etapa.numero}
+              /* O filete fecha embaixo no último item: a sequência precisa ter fim
                visível, senão a última etapa parece cortada. */
-            className="border-ancora/15 grid grid-cols-1 gap-x-10 gap-y-2 border-t py-7 last:border-b md:grid-cols-12 md:py-9"
-          >
-            <Eyebrow as="span" className="text-acento-texto md:col-span-2">
-              {etapa.numero}
-            </Eyebrow>
-            <h3 className="font-ui text-ancora text-lg font-semibold md:col-span-4">
-              {etapa.titulo}
-            </h3>
+              className="border-ancora/15 grid grid-cols-1 gap-x-10 gap-y-2 border-t py-7 last:border-b md:grid-cols-12 md:py-9"
+            >
+              <Eyebrow as="span" className="text-acento-texto md:col-span-2">
+                {etapa.numero}
+              </Eyebrow>
+              <h3 className="font-ui text-ancora text-lg font-semibold md:col-span-4">
+                {etapa.titulo}
+              </h3>
 
-            <div className="min-w-0 space-y-4 wrap-break-word md:col-span-6">
-              {etapa.paragrafos.map((paragrafo, i) => (
-                <p key={i} className="body medida text-tinta text-pretty">
-                  <Pendencia>{paragrafo}</Pendencia>
-                </p>
-              ))}
-            </div>
-          </li>
-        ))}
-      </ol>
+              <div className="min-w-0 space-y-4 wrap-break-word md:col-span-6">
+                {etapa.paragrafos.map((paragrafo, i) => (
+                  <p key={i} className="body medida text-tinta text-pretty">
+                    <Pendencia>{paragrafo}</Pendencia>
+                  </p>
+                ))}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </Reveal>
 
       <div className="mt-10 flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-6 md:mt-12">
         <WhatsappCta

@@ -1,5 +1,6 @@
 import { ChevronDown } from "lucide-react";
 
+import { Reveal } from "@/components/motion/Reveal";
 import { Pendencia } from "@/components/ui/Pendencia";
 import { Section } from "@/components/ui/Section";
 import { faq } from "@/config/content";
@@ -26,11 +27,13 @@ import { faq } from "@/config/content";
 export function Faq() {
   return (
     <Section id={faq.id} background="papel" aria-labelledby="faq-titulo">
-      <h2 id="faq-titulo" className="display-lg medida text-ancora">
-        {faq.titulo}
-      </h2>
+      <Reveal>
+        <h2 id="faq-titulo" className="display-lg medida text-ancora">
+          {faq.titulo}
+        </h2>
+      </Reveal>
 
-      <div className="mt-10 md:mt-14">
+      <Reveal atraso={120} className="mt-10 md:mt-14">
         {faq.perguntas.map((item) => (
           <details
             key={item.pergunta}
@@ -58,7 +61,7 @@ export function Faq() {
             </div>
           </details>
         ))}
-      </div>
+      </Reveal>
     </Section>
   );
 }

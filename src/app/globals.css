@@ -234,9 +234,10 @@
   [data-reveal="visivel"] {
     opacity: 1;
     transform: none;
+    /* O ease-out forte do Emil: o embutido é fraco demais e deixa o fim arrastado. */
     transition:
-      opacity 500ms ease-out,
-      transform 500ms ease-out;
+      opacity 500ms cubic-bezier(0.23, 1, 0.32, 1),
+      transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
     transition-delay: var(--reveal-atraso, 0ms);
   }
 }
@@ -288,15 +289,6 @@
            congelada justamente enquanto está sendo olhada. */
         animation-range: cover 0% cover 100%;
       }
-
-      [data-parallax-blob] {
-        animation-name: deriva-blob;
-        animation-duration: auto;
-        animation-timing-function: linear;
-        animation-fill-mode: both;
-        animation-timeline: view();
-        animation-range: cover 0% cover 100%;
-      }
     }
   }
 
@@ -312,17 +304,6 @@
     }
     to {
       transform: translate3d(0, 3.5%, 0) scale(1.12);
-    }
-  }
-
-  /* Contraponto: o blob sobe enquanto a foto desce. É o que cria a sensação de
-     profundidade — dois planos em velocidades diferentes, não um bloco deslizando. */
-  @keyframes deriva-blob {
-    from {
-      transform: translate3d(0, 2.5rem, 0);
-    }
-    to {
-      transform: translate3d(0, -2.5rem, 0);
     }
   }
 }
@@ -365,8 +346,7 @@
      de scroll-timeline, duração curta não para o movimento — ela cola o elemento
      no ÚLTIMO keyframe, e a foto ficaria torta e ampliada para sempre. Só `animation:
      none` desfaz de verdade. */
-  [data-parallax-foto],
-  [data-parallax-blob] {
+  [data-parallax-foto] {
     animation: none !important;
     transform: none !important;
   }

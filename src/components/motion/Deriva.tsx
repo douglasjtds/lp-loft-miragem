@@ -8,23 +8,31 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 /**
  * Deriva dos elementos decorativos — DESIGN-GUIDELINES.md §8, tabela de ferramentas.
  *
- * Loop longo (18–30s), `alternate`, amplitude ≤20px: devagar o bastante para ninguém
- * conseguir apontar o movimento, só perceber que a faixa não está morta. Passou de 20px
- * ou de meio minuto e vira "elemento animado", que é outra coisa.
+ * Loop longo (20–30s), `alternate`, deslocamento total ≤16px (landing-page-structure
+ * §5.10): devagar o bastante para ninguém conseguir apontar o movimento, só perceber
+ * que a água do fechamento não está parada. Passou disso e vira "elemento animado",
+ * que é outra coisa.
+ *
+ * O percurso é quase todo horizontal, como correnteza; o pouco de vertical é o que tira
+ * a cara de esteira. Quem deriva precisa de folga além da borda para o deslocamento
+ * não descobrir o fim do traço (ver CtaFinal).
  *
  * Cada elemento recebe duração e amplitude próprias, e nenhuma duração é múltipla da
  * outra — dois elementos em fase batendo o mesmo ciclo denunciam o truque na hora.
  *
- * Só forma decorativa e recorte de OBJETO derivam. A pessoa retratada nunca flutua (§9):
- * pessoa recortada boiando na tela lê como banner barato, que é o oposto do objetivo.
- * Sob `reduced-motion`, nenhum loop começa — não é "mais devagar", é parado.
+ * Só decoração deriva, nunca foto nem texto. Sob `reduced-motion`, nenhum loop começa:
+ * não é "mais devagar", é parado (§8, item 4). Se a preferência ligar com a página
+ * aberta, o efeito reexecuta e o `revert()` devolve a onda ao lugar.
  */
 
-/** Uma linha por alvo, na ordem do DOM. Ciclos deliberadamente primos entre si. */
+/**
+ * Uma linha por alvo, na ordem do DOM. √(x² + y²) ≤ 16 em todas, e ciclos que não são
+ * múltiplos um do outro: dois alvos batendo o mesmo ciclo denunciam o truque.
+ */
 const PERCURSOS = [
-  { x: 16, y: -12, duracao: 23000 },
-  { x: -14, y: 10, duracao: 29000 },
-  { x: 12, y: 14, duracao: 26000 },
+  { x: 14, y: 6, duracao: 23000 },
+  { x: -12, y: 8, duracao: 29000 },
+  { x: 10, y: -10, duracao: 26000 },
 ] as const;
 
 type DerivaProps = {
@@ -43,30 +51,49 @@ export function Deriva({ rootId }: DerivaProps) {
 
     let cancelado = false;
     let escopo: { revert: () => void } | null = null;
+    let observer: IntersectionObserver | null = null;
 
     carregarAnime().then(({ createScope, animate }) => {
       if (cancelado) return;
 
+      const loops: { play: () => void; pause: () => void }[] = [];
+
       escopo = createScope({ root: raiz }).add(() => {
-        const recortes = raiz.querySelectorAll<HTMLElement>("[data-derivavel]");
+        const recortes = raiz.querySelectorAll<Element>("[data-derivavel]");
 
         recortes.forEach((recorte, indice) => {
           const percurso = PERCURSOS[indice % PERCURSOS.length];
 
-          animate(recorte, {
-            x: [0, percurso.x],
-            y: [0, percurso.y],
+          const loop = animate(recorte, {
+            // `translateX/Y` por extenso, nunca `x`/`y`: num `<svg>` o anime.js
+            // resolve `x` e `y` como os ATRIBUTOS SVG de mesmo nome, que no svg raiz
+            // não deslocam nada. A onda ficava parada sem erro nenhum.
+            translateX: [0, percurso.x],
+            translateY: [0, percurso.y],
             duration: percurso.duracao,
             ease: "inOutSine",
             loop: true,
             alternate: true,
+            autoplay: false,
           });
+          loops.push(loop);
         });
       });
+
+      // Fora da tela o loop para: sem isso seriam rAF e repintura da svg durante a
+      // visita inteira, para um movimento que ninguém está vendo. Retoma de onde
+      // parou, então quem volta à faixa não vê a onda saltar.
+      observer = new IntersectionObserver(([entrada]) => {
+        loops.forEach((loop) =>
+          entrada.isIntersecting ? loop.play() : loop.pause(),
+        );
+      });
+      observer.observe(raiz);
     });
 
     return () => {
       cancelado = true;
+      observer?.disconnect();
       escopo?.revert();
     };
   }, [reduzido, rootId]);

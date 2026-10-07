@@ -1,3 +1,5 @@
+import { Deriva } from "@/components/motion/Deriva";
+import { Reveal } from "@/components/motion/Reveal";
 import { Pendencia } from "@/components/ui/Pendencia";
 import { Section } from "@/components/ui/Section";
 import { WhatsappCta } from "@/components/ui/WhatsappCta";
@@ -20,8 +22,9 @@ import { ondaPath } from "@/lib/onda";
  * no pior caso de uma onda passar atrás do texto. Ao trocar a paleta ou a opacidade,
  * refazer a conta (`scripts/contraste.mjs`).
  *
- * `data-derivavel` é o gancho da deriva da Fase 7 (≤16px, 20–30s). Até lá, e sob
- * reduced-motion para sempre, as ondas ficam paradas.
+ * As ondas derivam (`Deriva`, ≤16px, 23s, `alternate`). A svg é 2rem mais larga que a
+ * faixa e começa 1rem antes dela: é a folga que impede o deslocamento horizontal de
+ * mostrar onde o traço termina. Sob reduced-motion, ficam paradas.
  */
 
 const ONDAS = [0, 1, 2, 3, 4].map((i) =>
@@ -54,7 +57,7 @@ export function CtaFinal() {
           focusable="false"
           viewBox="0 0 1000 184"
           preserveAspectRatio="none"
-          className="text-decor/10 h-full w-full"
+          className="text-decor/10 relative -left-4 h-full w-[calc(100%+2rem)] max-w-none"
         >
           {ONDAS.map((d) => (
             <path
@@ -70,7 +73,7 @@ export function CtaFinal() {
         </svg>
       </div>
 
-      <div className="relative max-w-2xl">
+      <Reveal className="relative max-w-2xl">
         <h2
           id="cta-final-titulo"
           className="display-lg text-papel text-balance"
@@ -91,7 +94,9 @@ export function CtaFinal() {
             {ctaFinal.cta.label}
           </WhatsappCta>
         </div>
-      </div>
+      </Reveal>
+
+      <Deriva rootId={ctaFinal.id} />
     </Section>
   );
 }

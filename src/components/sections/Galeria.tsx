@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/motion/Reveal";
 import { GaleriaGrade } from "@/components/sections/GaleriaGrade";
 import { LinkExterno } from "@/components/ui/LinkExterno";
 import { Section } from "@/components/ui/Section";
@@ -30,13 +31,17 @@ export function Galeria() {
       background="papel"
       aria-labelledby="galeria-titulo"
     >
-      <h2 id="galeria-titulo" className="display-lg medida text-ancora">
-        {galeria.titulo}
-      </h2>
+      <Reveal>
+        <h2 id="galeria-titulo" className="display-lg medida text-ancora">
+          {galeria.titulo}
+        </h2>
+      </Reveal>
 
-      <div className="mt-10 lg:mt-12">
+      {/* A grade entra como um bloco só: miniatura por miniatura seria uma cascata
+          de vinte movimentos para ler uma foto. */}
+      <Reveal atraso={120} className="mt-10 lg:mt-12">
         <GaleriaGrade fotos={fotos} textos={galeria.lightbox} />
-      </div>
+      </Reveal>
 
       <LinkExterno
         link={galeria.instagram}
