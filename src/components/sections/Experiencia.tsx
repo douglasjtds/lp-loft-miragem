@@ -4,6 +4,7 @@ import { Pendencia } from "@/components/ui/Pendencia";
 import { Section } from "@/components/ui/Section";
 import { experiencia, type Momento } from "@/config/content";
 import { cn } from "@/lib/cn";
+import { ondaPath } from "@/lib/onda";
 
 /**
  * A seção-assinatura — landing-page-structure.md §5.3.
@@ -28,42 +29,10 @@ import { cn } from "@/lib/cn";
  * sob reduced-motion para sempre, tudo nasce desenhado e visível.
  */
 
-/**
- * A onda de cinco cristas da logo como linha (§6), na mesma construção das máscaras:
- * cada meia onda vai de um extremo ao outro com alças de 0,3642 da meia onda, o que dá
- * uma senoide sem vértice. Gerada, e não escrita à mão, para a regularidade sobreviver.
- *
+/*
  * As duas SVGs usam `preserveAspectRatio="none"`: a onda estica junto com a seção e o
  * `non-scaling-stroke` mantém o traço com a mesma espessura em qualquer tamanho.
  */
-function ondaPath({
-  cristas,
-  comprimento,
-  amplitude,
-  centro,
-  vertical,
-}: {
-  cristas: number;
-  comprimento: number;
-  amplitude: number;
-  centro: number;
-  vertical: boolean;
-}) {
-  const meiaOnda = comprimento / (cristas * 2);
-  const alca = meiaOnda * 0.3642;
-  const ponto = (ao: number, de: number) =>
-    vertical ? `${centro + de} ${ao}` : `${ao} ${centro + de}`;
-
-  let d = `M${ponto(0, -amplitude)}`;
-  for (let i = 0; i < cristas * 2; i++) {
-    const inicio = i * meiaOnda;
-    const de = i % 2 === 0 ? -amplitude : amplitude;
-    const para = -de;
-    d += ` C${ponto(inicio + alca, de)}, ${ponto(inicio + meiaOnda - alca, para)}, ${ponto(inicio + meiaOnda, para)}`;
-  }
-  return d;
-}
-
 const ONDA_HORIZONTAL = ondaPath({
   cristas: 5,
   comprimento: 1000,

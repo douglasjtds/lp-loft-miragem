@@ -68,7 +68,7 @@ Tertuliano. Frase da própria cliente, usada literalmente: "A vista mais exclusi
   4 hóspedes, 1 quarto, 2 camas, 1 banheiro; piscina-praia, pranchas de SUP, beira da represa,
   cozinha, Wi-Fi e espaço de trabalho, estacionamento gratuito, self check-in com cofre.
 - Fotos reais em `reference-files/`: `por-do-sol.jpg`, `cafe-da-manha.jpg`, `piscina-noite.jpg`,
-  `mari-com-prancha.jpg` (pessoa identificável, autorização pendente),
+  `mari-com-prancha.jpg` (pessoa identificável, autorização de uso confirmada em 2026-10-07),
   `duas-pranchas-logo.jpg` (640px, sem original em alta).
 - **Ausentes, não fabricar:** texto das avaliações (aguardando prints; seção fica oculta),
   mais fotos da galeria, vídeos, preço, regras, horários, localização detalhada.

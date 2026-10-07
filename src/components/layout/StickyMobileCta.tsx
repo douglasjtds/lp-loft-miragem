@@ -15,6 +15,8 @@ import { cn } from "@/lib/cn";
  * Só existe abaixo de 768px, e só aparece depois que o herói sai da viewport — enquanto
  * o herói está visível ela seria redundante e roubaria altura útil de uma tela de 390px.
  *
+ * Fundo `papel` SÓLIDO, como o header: sem blur nem transparência (§5.0).
+ *
  * `invisible` (e não só `opacity-0`) no estado fechado é deliberado: elemento
  * transparente continua recebendo foco de teclado, o que criaria uma parada invisível
  * na ordem de tabulação. Sob `prefers-reduced-motion` a transição é zerada em
@@ -42,7 +44,7 @@ export function StickyMobileCta() {
   return (
     <div
       className={cn(
-        "border-ancora/10 bg-papel/95 fixed inset-x-0 bottom-0 z-40 border-t backdrop-blur-md md:hidden",
+        "border-ancora/10 bg-papel fixed inset-x-0 bottom-0 z-40 border-t md:hidden",
         "px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]",
         "transition-[opacity,transform] duration-300 ease-out",
         visivel

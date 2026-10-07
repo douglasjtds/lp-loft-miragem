@@ -198,6 +198,12 @@
     border-radius: 2px;
   }
 
+  /* Na faixa escura (CtaFinal, footer) o `acento-texto` cai para 2.03:1 sobre a
+     ancora; a §10 manda usar o `acento` (4.76:1). */
+  .bg-ancora :focus-visible {
+    outline-color: var(--color-acento);
+  }
+
   /* Imagem nunca estoura o container nem vira baseline de linha. */
   img,
   svg,

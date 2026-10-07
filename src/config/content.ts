@@ -382,8 +382,8 @@ export const galeria: {
       alt: "Bandeja de café da manhã flutuando na piscina-praia, com a cabana preta do loft e o céu azul ao fundo.",
       legenda: "Café na piscina-praia",
     },
-    /* Pessoa identificável: sai da lista se a autorização de uso de imagem não vier
-       (<<A CONFIRMAR>> em DESIGN-GUIDELINES §9). As pranchas cobrem o SUP sozinhas. */
+    /* Pessoa identificável: autorização de uso de imagem confirmada pela cliente em
+       2026-10-07. Fica só na galeria; a tarde da Experiência segue sem foto (§5.3). */
     {
       tipo: "foto",
       src: "/images/tarde-sup.jpg",
@@ -465,7 +465,9 @@ export const oLoft = {
  *
  * Critério da seleção: falam do que só o loft tem (vista da represa, piscina, SUP,
  * vinho de cortesia, casal) e variam de tamanho para o masonry ter ritmo. A regra da
- * Taste de cortar citação em 3 linhas perde para a spec (texto integral).
+ * Taste de cortar citação em 3 linhas perde para a spec (texto integral). A ORDEM também
+ * é curadoria: abre com uma de tamanho médio e específica (vinho, represa), para o
+ * celular não começar por um paredão de 900 caracteres.
  *
  * Exceções conscientes às regras de copy, por serem fala de hóspede (decisão do
  * Douglas em 2026-10-06): Cynthia usa travessão e Yuri escreve "mar de minas".
@@ -493,6 +495,8 @@ export const avaliacoes: {
   rotuloFonte: Record<Avaliacao["fonte"], string>;
   itens: readonly Avaliacao[];
   links: readonly LinkExterno[];
+  /** Entre os links de fonte: "Ler todas no Google ou no Airbnb". */
+  linksSeparador: string;
 } = {
   exibir: true,
   id: "avaliacoes",
@@ -501,25 +505,18 @@ export const avaliacoes: {
   rotuloFonte: { google: "via Google", airbnb: "via Airbnb" },
   itens: [
     {
-      nome: "Jhonathan",
-      quando: "2025",
-      fonte: "google",
-      texto:
-        "Experiência incrível em Três Marias!\nO loft tem estilo de um chalé e superou todas as nossas expectativas!\nO acesso é muito fácil, já que fica em um bairro tranquilo dentro da própria cidade. Ao mesmo tempo, está à beira da represa, com uma vista deslumbrante e um clima de paz perfeito.\nA estrutura é impecável:\ncama queen super confortável, ar-condicionado, TV, wi-fi, cozinha totalmente equipada, cortinas automatizadas, piscina com prainha, tudo novinho e funcionando perfeitamente. Além de tudo isso, tem duas pranchas de stand up paddle com coletes, que usamos para aproveitar a represa.\nO check-in e o check-out são totalmente automatizados, o que nos deu flexibilidade e praticidade.\nFoi uma estadia perfeita para relaxar, aproveitar a natureza e curtir momentos a dois.\nRecomendamos demais essa experiência!",
-    },
-    {
-      nome: "Luiz Fernando",
-      quando: "abr 2026",
-      fonte: "google",
-      texto:
-        "Experiência incrível, Loft muito aconchegante, bem equipado e de fácil acesso. Lugar ideal para casais que buscam descanso e tranquilidade. Parabéns aos anfitriões!!",
-    },
-    {
       nome: "Cynthia",
       quando: "mai 2026",
       fonte: "google",
       texto:
         "Ambiente extremamente limpo, anfitriões muito atenciosos — o vinho de cortesia foi um detalhe que faz toda a diferença. Tudo pensado com cuidado, até a Alexa para deixar a experiência ainda melhor. O espaço é novinho e exatamente como nas fotos. Vivi dias maravilhosos de descanso, com uma vista linda para a represa. Com certeza voltarei!",
+    },
+    {
+      nome: "Jhonathan",
+      quando: "2025",
+      fonte: "google",
+      texto:
+        "Experiência incrível em Três Marias!\nO loft tem estilo de um chalé e superou todas as nossas expectativas!\nO acesso é muito fácil, já que fica em um bairro tranquilo dentro da própria cidade. Ao mesmo tempo, está à beira da represa, com uma vista deslumbrante e um clima de paz perfeito.\nA estrutura é impecável:\ncama queen super confortável, ar-condicionado, TV, wi-fi, cozinha totalmente equipada, cortinas automatizadas, piscina com prainha, tudo novinho e funcionando perfeitamente. Além de tudo isso, tem duas pranchas de stand up paddle com coletes, que usamos para aproveitar a represa.\nO check-in e o check-out são totalmente automatizados, o que nos deu flexibilidade e praticidade.\nFoi uma estadia perfeita para relaxar, aproveitar a natureza e curtir momentos a dois.\nRecomendamos demais essa experiência!",
     },
     {
       nome: "Ariane",
@@ -536,6 +533,13 @@ export const avaliacoes: {
         'Olha essas fotos..sério. Volta lá e abre as fotos; que lugar INCRÍVEL! Piscininha, deck, rua pertinho do mar de minas, SUP pra remar na tranquilidade das águas calmas da represa, caminha de frente pra tudo isso e janela com black-out eletrônico. Sei nem se eu estou vivendo ou sonhando! Idéia maravilhosa para essa região e num lugar super privilegiado. Se eu tivesse lido no anúncio: "mínimo de 62 noites", teria clicado no DECLARO QUE LI E ACEITO...',
     },
     {
+      nome: "Luiz Fernando",
+      quando: "abr 2026",
+      fonte: "google",
+      texto:
+        "Experiência incrível, Loft muito aconchegante, bem equipado e de fácil acesso. Lugar ideal para casais que buscam descanso e tranquilidade. Parabéns aos anfitriões!!",
+    },
+    {
       nome: "Lorena",
       quando: "2025",
       fonte: "google",
@@ -545,7 +549,7 @@ export const avaliacoes: {
   ],
   links: [
     {
-      label: "ler todas no Google",
+      label: "Ler todas no Google",
       href: fichaGoogle,
       ariaLabel: `Ler todas as avaliações no Google ${NOVA_ABA}`,
     },
@@ -555,6 +559,7 @@ export const avaliacoes: {
       ariaLabel: `Ler as avaliações no Airbnb ${NOVA_ABA}`,
     },
   ],
+  linksSeparador: "ou",
 };
 
 /* ────────────────────────────────────────────────────────────────────────────
@@ -710,7 +715,8 @@ export const ctaFinal = {
    ──────────────────────────────────────────────────────────────────────────── */
 
 export const footer = {
-  monogramaAlt: `Monograma do ${profile.nome}`,
+  /** A logo completa já traz o nome escrito: o alt é o nome, sem "logo de". */
+  logoAlt: `${profile.nome}, ${cidadeUf}`,
   nome: `${anfitrioesFormatado}, anfitriões` as Texto,
   /** Cidade/região é o dado que mais pesa em busca local. */
   cidade: cidadeUf as Texto,

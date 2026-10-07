@@ -8,6 +8,7 @@ import { Experiencia } from "@/components/sections/Experiencia";
 import { Faq } from "@/components/sections/Faq";
 import { Galeria } from "@/components/sections/Galeria";
 import { Hero } from "@/components/sections/Hero";
+import { Localizacao } from "@/components/sections/Localizacao";
 import { OLoft } from "@/components/sections/OLoft";
 import { ProvaRapida } from "@/components/sections/ProvaRapida";
 import { header } from "@/config/content";
@@ -19,7 +20,6 @@ import { jsonLd } from "@/lib/schema";
  * A ordem é o argumento da §5, e não uma lista: me imagino lá → é real → cabe no que
  * preciso → reservar é simples → agir.
  *
- * Localizacao entra na leva C da Fase 5 (o conteúdo já está em content.ts).
  * `Depoimentos` renderiza as Avaliações; `ComoFunciona`, o Como reservar.
  */
 export default function Home() {
@@ -58,6 +58,7 @@ export default function Home() {
         <OLoft />
         <Depoimentos />
         <ComoFunciona />
+        <Localizacao />
         <Faq />
         <CtaFinal />
       </main>

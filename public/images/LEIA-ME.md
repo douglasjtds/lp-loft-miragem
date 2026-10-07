@@ -7,7 +7,7 @@ As fotos tratadas, com nomes semânticos: o nome é o papel da foto na página. 
 |---|---|---|---|
 | `hero-por-do-sol.jpg` | Herói (LCP, `priority`) | `por-do-sol.jpg` | 1200×1500 (4:5), corte por baixo: o sol fica no terço superior |
 | `manha-cafe.jpg` | Experiência · manhã | `cafe-da-manha.jpg` | 1100px |
-| `tarde-sup.jpg` | Experiência · tarde | `mari-com-prancha.jpg` | 1100px. Pessoa identificável: `<<A CONFIRMAR: autorização de uso de imagem>>` |
+| `tarde-sup.jpg` | Galeria | `mari-com-prancha.jpg` | 1100px. Pessoa identificável: autorização de uso de imagem confirmada em 2026-10-07 |
 | `noite-piscina.jpg` | Experiência · noite | `piscina-noite.jpg` | 1100px, sombras levantadas sem mexer no azul |
 | `galeria-pranchas.jpg` | Galeria | `duas-pranchas-logo.jpg` | 640px, a resolução do original: é também a do lightbox |
 | `*-grande.jpg` | Lightbox | as mesmas | 1440 a 1600px, carregadas só ao abrir |
