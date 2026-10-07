@@ -25,11 +25,12 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-5">
             <Image
-              src="/brand/monograma-claro.png"
+              src="/brand/monograma-claro.svg"
               alt={footer.monogramaAlt}
-              width={114}
-              height={128}
-              className="h-12 w-auto"
+              width={48}
+              height={48}
+              unoptimized
+              className="h-12 w-12"
             />
 
             <p className="body text-papel mt-6">
