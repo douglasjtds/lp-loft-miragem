@@ -50,6 +50,14 @@ type OrganicImageProps = {
    */
   parallax?: boolean;
   /**
+   * Espelha a MÁSCARA na horizontal sem espelhar a foto: o wrapper inverte (e com ele o
+   * clipPath), a imagem inverte de novo e volta ao sentido real. É assim que a noite da
+   * Experiência usa a `b` ao contrário sem uma quinta forma no sistema da §6.
+   * Não combina com `parallax`: o keyframe reescreve o `transform` da imagem e a foto
+   * apareceria espelhada.
+   */
+  espelhada?: boolean;
+  /**
    * Endereço para os componentes de motion (DESIGN-GUIDELINES.md §8). Marcador de DOM
    * puro: nenhum estilo, nenhuma mudança de render, inerte sem JS.
    */
@@ -65,13 +73,18 @@ export function OrganicImage({
   className,
   objectPosition,
   parallax = false,
+  espelhada = false,
   "data-anim": dataAnim,
 }: OrganicImageProps) {
   return (
     <div
       data-anim={dataAnim}
       data-parallax-alvo={parallax ? "" : undefined}
-      className={cn("relative overflow-hidden", className)}
+      className={cn(
+        "relative overflow-hidden",
+        espelhada && "-scale-x-100",
+        className,
+      )}
       style={{ clipPath: organicClip(shape) }}
     >
       <Image
@@ -81,7 +94,7 @@ export function OrganicImage({
         sizes={sizes}
         priority={priority}
         data-parallax-foto={parallax ? "" : undefined}
-        className="object-cover"
+        className={cn("object-cover", espelhada && "-scale-x-100")}
         style={objectPosition ? { objectPosition } : undefined}
       />
     </div>

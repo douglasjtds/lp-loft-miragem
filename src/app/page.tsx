@@ -4,8 +4,10 @@ import { StickyMobileCta } from "@/components/layout/StickyMobileCta";
 import { ComoFunciona } from "@/components/sections/ComoFunciona";
 import { CtaFinal } from "@/components/sections/CtaFinal";
 import { Depoimentos } from "@/components/sections/Depoimentos";
+import { Experiencia } from "@/components/sections/Experiencia";
 import { Faq } from "@/components/sections/Faq";
 import { Hero } from "@/components/sections/Hero";
+import { OLoft } from "@/components/sections/OLoft";
 import { ProvaRapida } from "@/components/sections/ProvaRapida";
 import { header } from "@/config/content";
 import { jsonLd } from "@/lib/schema";
@@ -16,7 +18,7 @@ import { jsonLd } from "@/lib/schema";
  * A ordem é o argumento da §5, e não uma lista: me imagino lá → é real → cabe no que
  * preciso → reservar é simples → agir.
  *
- * Experiencia, Galeria, OLoft e Localizacao entram na Fase 5 (o conteúdo já está em
+ * Galeria e Localizacao entram nas próximas levas da Fase 5 (o conteúdo já está em
  * content.ts). `Depoimentos` renderiza as Avaliações; `ComoFunciona`, o Como reservar.
  */
 export default function Home() {
@@ -50,6 +52,8 @@ export default function Home() {
       <main id="conteudo" className="flex-1">
         <Hero />
         <ProvaRapida />
+        <Experiencia />
+        <OLoft />
         <Depoimentos />
         <ComoFunciona />
         <Faq />
