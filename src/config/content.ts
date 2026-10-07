@@ -121,6 +121,8 @@ export const header = {
     origem: "header",
     ariaLabel: `Chamar o ${profile.nome} no WhatsApp ${NOVA_ABA}`,
   } satisfies CtaContent,
+  /** Lockup horizontal: monograma + nome, o que a logo empilhada não oferece (§5). */
+  nome: profile.nome,
   monogramaAlt: `Monograma do ${profile.nome}`,
   navLabel: "Navegação principal",
   inicioLabel: "Ir para o início da página",

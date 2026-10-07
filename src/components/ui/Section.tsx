@@ -33,11 +33,18 @@ const fundos: Record<SectionBackground, string> = {
  * entre duas seções cheias, e o ritmo de `secao-y` a transformaria num bloco.
  * Continua sendo padding-block, nunca margin — a regra de não colapsar espaço vale igual.
  */
-export type SectionSpacing = "secao" | "faixa";
+export type SectionSpacing = "secao" | "faixa" | "hero";
 
+/**
+ * `hero` existe porque a dobra fica embaixo de um header fixo de 72px. No mobile a
+ * foto abre a página (§5.1), e `secao-y` somado à folga do header empurraria o CTA
+ * para fora de 390×844: o topo é o header + 24px (escala da §7). No `lg` o texto divide a linha com
+ * a foto e o ritmo normal volta, com a folga do header somada.
+ */
 const espacamentos: Record<SectionSpacing, string> = {
   secao: "secao-y",
-  faixa: "py-6",
+  faixa: "py-8",
+  hero: "pt-24 pb-16 lg:pt-32 lg:pb-24",
 };
 
 type SectionProps = {
